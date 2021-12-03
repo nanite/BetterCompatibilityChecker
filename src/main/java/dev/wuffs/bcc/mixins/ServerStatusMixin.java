@@ -4,8 +4,9 @@ import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import dev.wuffs.bcc.BCC;
+import dev.wuffs.bcc.Config;
 import dev.wuffs.bcc.IServerStatus;
-import dev.wuffs.bcc.ModpackData;
+import dev.wuffs.bcc.PingData;
 import net.minecraft.network.protocol.status.ServerStatus;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -17,16 +18,11 @@ import java.lang.reflect.Type;
 
 @Mixin(ServerStatus.class)
 public class ServerStatusMixin implements IServerStatus {
-
-//    @Shadow
-//    public abstract void invalidateJson();
-
     private String modpackData;
 
     @Override
     public void setModpackData(String modpackData) {
         this.modpackData = modpackData;
-//        this.invalidateJson();
     }
 
     @Override
@@ -36,9 +32,18 @@ public class ServerStatusMixin implements IServerStatus {
 
     @Mixin(ServerStatus.Serializer.class)
     public static class ServerStatusSerializerMixin {
+
         @ModifyVariable(method = "serialize(Lnet/minecraft/network/protocol/status/ServerStatus;Ljava/lang/reflect/Type;Lcom/google/gson/JsonSerializationContext;)Lcom/google/gson/JsonElement;", at = @At("STORE"), remap = false)
         private JsonObject injected(JsonObject jsonObject) {
-            jsonObject.add("modpack", BCC.metaData);
+            if (Config.useManifest.get()) {
+                jsonObject.add("modpack", BCC.metaData);
+            } else {
+                JsonObject modpack = new JsonObject();
+                modpack.addProperty("id", Config.modpackProjectID.get());
+                modpack.addProperty("name", Config.modpackName.get());
+                modpack.addProperty("version", Config.modpackVersion.get());
+                jsonObject.add("modpack", modpack);
+            }
             return jsonObject;
         }
 
@@ -46,7 +51,14 @@ public class ServerStatusMixin implements IServerStatus {
         private void deserialize(JsonElement jsonElement, Type type, JsonDeserializationContext context, CallbackInfoReturnable<ServerStatus> cir) {
             JsonObject jsonObject = jsonElement.getAsJsonObject();
             if (jsonObject.has("modpack")) {
-                BCC.remoteModpackData = context.deserialize(jsonObject.get("modpack"), ModpackData.class);
+                if (Config.useManifest.get()) {
+                    BCC.remotePingData = context.deserialize(jsonObject.get("modpack"), PingData.Manifest.class);
+                }else {
+                    JsonElement modpackData = jsonObject.get("modpack");
+                    BCC.remotePingData.projectID = modpackData.getAsJsonObject().get("id").getAsInt();
+                    BCC.remotePingData.name = modpackData.getAsJsonObject().get("name").getAsString();
+                    BCC.remotePingData.version = modpackData.getAsJsonObject().get("version").getAsString();
+                }
             }
         }
     }

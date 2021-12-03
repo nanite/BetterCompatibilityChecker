@@ -3,6 +3,8 @@ package dev.wuffs.bcc.mixins;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import dev.wuffs.bcc.BCC;
+import dev.wuffs.bcc.Config;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.gui.screens.multiplayer.JoinMultiplayerScreen;
 import net.minecraft.client.multiplayer.ServerData;
@@ -29,18 +31,30 @@ public class ForgeClientHooksMixin {
     public static void drawForgePingInfo(JoinMultiplayerScreen gui, ServerData target, PoseStack mStack, int x, int y, int width, int relativeMouseX, int relativeMouseY) {
         int idx;
         String tooltip;
-        if (BCC.remoteModpackData == null || BCC.localModpackData == null || target.forgeData == null)
+        if (BCC.remotePingData == null || BCC.localPingData == null || target.forgeData == null)
             return;
         switch (target.forgeData.type) {
             case "FML":
-                if ((BCC.remoteModpackData.id == BCC.localModpackData.id) && (BCC.remoteModpackData.version.id == BCC.localModpackData.version.id)) {
-                    idx = 0;
-                    tooltip = "You are running the same version of the modpack as the server :D\n" + ForgeI18n.parseMessage("fml.menu.multiplayer.compatible", target.forgeData.numberOfMods);
-                } else {
-                    idx = 16;
-                    tooltip = "You are not running the same version of the modpack as the server";
+                if (Config.useManifest.get()) {
+                    if ((BCC.remotePingData.manifest.id == BCC.localPingData.manifest.id) && (BCC.remotePingData.manifest.version.id == BCC.localPingData.manifest.version.id)) {
+                        idx = 0;
+                        tooltip = ChatFormatting.DARK_AQUA + "Server is running " + BCC.remotePingData.manifest.name + " " + BCC.remotePingData.manifest.version.id + "\n" + ChatFormatting.DARK_GREEN + "Your version is " + BCC.localPingData.manifest.name + " " + BCC.localPingData.manifest.version.id + "\n";
+                    } else {
+                        idx = 16;
+                        tooltip = ChatFormatting.DARK_RED + "You are not running the same version of the modpack as the server :(\n" + ChatFormatting.RED + "Server is running " + BCC.remotePingData.manifest.name + " " + BCC.remotePingData.manifest.version.id + "\n" + ChatFormatting.RED + "Your version is " + BCC.localPingData.manifest.name + " " + BCC.localPingData.manifest.version.id;
 
+                    }
+                } else {
+                    if ((BCC.remotePingData.name.equals(BCC.localPingData.name)) && (BCC.remotePingData.version.equals(BCC.localPingData.version))) {
+                        idx = 0;
+                        tooltip = ChatFormatting.DARK_AQUA + "Server is running " + BCC.remotePingData.name + " " + BCC.remotePingData.version + "\n" + ChatFormatting.DARK_GREEN + "Your version is " + BCC.localPingData.name + " " + BCC.localPingData.version + "\n";
+                    } else {
+                        idx = 16;
+                        tooltip = ChatFormatting.DARK_RED + "You are not running the same version of the modpack as the server :(\n" + ChatFormatting.RED + "Server is running " + BCC.remotePingData.name + " " + BCC.remotePingData.version + "\n" + ChatFormatting.RED + "Your version is " + BCC.localPingData.name + " " + BCC.localPingData.version;
+
+                    }
                 }
+
                 break;
             case "VANILLA":
                 if (target.forgeData.isCompatible) {
@@ -59,7 +73,7 @@ public class ForgeClientHooksMixin {
         RenderSystem.setShaderTexture(0, ICON_SHEET);
         GuiComponent.blit(mStack, x + width - 18, y + 10, 16, 16, 0, idx, 16, 16, 256, 256);
 
-        if(relativeMouseX > width - 15 && relativeMouseX < width && relativeMouseY > 10 && relativeMouseY < 26) {
+        if (relativeMouseX > width - 15 && relativeMouseX < width && relativeMouseY > 10 && relativeMouseY < 26) {
             //this is not the most proper way to do it,
             //but works best here and has the least maintenance overhead
             gui.setToolTip(Arrays.stream(tooltip.split("\n")).map(TextComponent::new).collect(Collectors.toList()));
