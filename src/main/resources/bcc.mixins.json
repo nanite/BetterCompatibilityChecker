@@ -8,7 +8,8 @@
     "ServerStatusMixin$ServerStatusSerializerMixin"
   ],
   "client": [
-    "ForgeClientHooksMixin"
+    "ForgeClientHooksMixin",
+    "ServerDataMixin"
   ],
   "injectors": {
     "defaultRequire": 1

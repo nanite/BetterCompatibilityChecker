@@ -7,11 +7,10 @@ public class Config {
 
     public static ForgeConfigSpec CONFIG;
 
-    public static ForgeConfigSpec.BooleanValue debug;
     public static ForgeConfigSpec.IntValue modpackProjectID;
     public static ForgeConfigSpec.ConfigValue<String> modpackName;
     public static ForgeConfigSpec.ConfigValue<String> modpackVersion;
-    public static ForgeConfigSpec.BooleanValue useManifest;
+    public static ForgeConfigSpec.BooleanValue useMetadata;
 
 
     static {
@@ -24,10 +23,8 @@ public class Config {
                 .define("modpackName", "PLEASE_CHANGE_ME");
         modpackVersion = BUILDER.comment("The version of the modpack")
                 .define("modpackVersion", "CHANGE_ME");
-        useManifest = BUILDER.comment("Use the manifest.json to determine the modpack version", "ONLY ENABLE THIS IF YOU KNOW WHAT YOU ARE DOING")
-                .define("useManifest", false);
-        debug = BUILDER.comment("Enable debug mode")
-                .define("debug", false);
+        useMetadata = BUILDER.comment("Use the metadata.json to determine the modpack version", "ONLY ENABLE THIS IF YOU KNOW WHAT YOU ARE DOING")
+                .define("useMetadata", false);
 
         BUILDER.pop();
 

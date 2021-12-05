@@ -3,6 +3,7 @@ package dev.wuffs.bcc.mixins;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonSerializationContext;
 import dev.wuffs.bcc.BCC;
 import dev.wuffs.bcc.Config;
 import dev.wuffs.bcc.IServerStatus;
@@ -11,54 +12,48 @@ import net.minecraft.network.protocol.status.ServerStatus;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.lang.reflect.Type;
 
 @Mixin(ServerStatus.class)
 public class ServerStatusMixin implements IServerStatus {
-    private String modpackData;
+    private PingData modpackData;
 
     @Override
-    public void setModpackData(String modpackData) {
-        this.modpackData = modpackData;
+    public PingData getModpackData() {
+        return this.modpackData;
     }
 
     @Override
-    public String getModpackData() {
-        return this.modpackData;
+    public void setModpackData(PingData modpackData) {
+        this.modpackData = modpackData;
+//        this.invalidateJson();
     }
 
     @Mixin(ServerStatus.Serializer.class)
     public static class ServerStatusSerializerMixin {
 
-        @ModifyVariable(method = "serialize(Lnet/minecraft/network/protocol/status/ServerStatus;Ljava/lang/reflect/Type;Lcom/google/gson/JsonSerializationContext;)Lcom/google/gson/JsonElement;", at = @At("STORE"), remap = false)
-        private JsonObject injected(JsonObject jsonObject) {
-            if (Config.useManifest.get()) {
-                jsonObject.add("modpack", BCC.metaData);
-            } else {
-                JsonObject modpack = new JsonObject();
-                modpack.addProperty("id", Config.modpackProjectID.get());
-                modpack.addProperty("name", Config.modpackName.get());
-                modpack.addProperty("version", Config.modpackVersion.get());
-                jsonObject.add("modpack", modpack);
-            }
-            return jsonObject;
+        @Inject(method = "serialize(Lnet/minecraft/network/protocol/status/ServerStatus;Ljava/lang/reflect/Type;Lcom/google/gson/JsonSerializationContext;)Lcom/google/gson/JsonElement;", at = @At("RETURN"), remap = false)
+        private void serialize(ServerStatus serverStatus, Type type, JsonSerializationContext jsonSerializationContext, CallbackInfoReturnable<JsonElement> cir) {
+            JsonObject jsonObject = cir.getReturnValue().getAsJsonObject();
+            jsonObject.remove("forgeData");
+            jsonObject.add("modpackData", jsonSerializationContext.serialize(BCC.localPingData, PingData.class));
         }
 
         @Inject(method = "deserialize(Lcom/google/gson/JsonElement;Ljava/lang/reflect/Type;Lcom/google/gson/JsonDeserializationContext;)Lnet/minecraft/network/protocol/status/ServerStatus;", at = @At("RETURN"), remap = false)
         private void deserialize(JsonElement jsonElement, Type type, JsonDeserializationContext context, CallbackInfoReturnable<ServerStatus> cir) {
             JsonObject jsonObject = jsonElement.getAsJsonObject();
-            if (jsonObject.has("modpack")) {
-                if (Config.useManifest.get()) {
-                    BCC.remotePingData = context.deserialize(jsonObject.get("modpack"), PingData.Manifest.class);
-                }else {
-                    JsonElement modpackData = jsonObject.get("modpack");
-                    BCC.remotePingData.projectID = modpackData.getAsJsonObject().get("id").getAsInt();
-                    BCC.remotePingData.name = modpackData.getAsJsonObject().get("name").getAsString();
-                    BCC.remotePingData.version = modpackData.getAsJsonObject().get("version").getAsString();
-                }
+            if (jsonObject.has("modpackData")) {
+                IServerStatus returnValue = (IServerStatus) cir.getReturnValue();
+                JsonElement modpackData = jsonObject.get("modpackData");
+                JsonObject modpack = modpackData.getAsJsonObject();
+                PingData pingData = new PingData();
+                pingData.projectID = modpack.get("projectID").getAsInt();
+                pingData.name = modpack.get("name").getAsString();
+                pingData.version = modpack.get("version").getAsString();
+                pingData.isMetadata = modpack.get("isMetadata").getAsBoolean();
+                returnValue.setModpackData(pingData);
             }
         }
     }

@@ -2,21 +2,23 @@ package dev.wuffs.bcc.mixins;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
-import dev.wuffs.bcc.BCC;
-import dev.wuffs.bcc.Config;
+import dev.wuffs.bcc.*;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.gui.screens.multiplayer.JoinMultiplayerScreen;
 import net.minecraft.client.multiplayer.ServerData;
 import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.protocol.status.ServerStatus;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.client.ForgeHooksClient;
-import net.minecraftforge.common.ForgeI18n;
 import net.minecraftforge.versions.forge.ForgeVersion;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Overwrite;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.Arrays;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Mixin(value = ForgeHooksClient.class, remap = false)
@@ -25,51 +27,25 @@ public class ForgeClientHooksMixin {
 
     /**
      * @author BetterCompatabilityChecker
-     * @reason If the server is sending the modpack and version use it to check if compatible or not
      */
-    @Overwrite
-    public static void drawForgePingInfo(JoinMultiplayerScreen gui, ServerData target, PoseStack mStack, int x, int y, int width, int relativeMouseX, int relativeMouseY) {
+    @Inject(method = "drawForgePingInfo(Lnet/minecraft/client/gui/screens/multiplayer/JoinMultiplayerScreen;Lnet/minecraft/client/multiplayer/ServerData;Lcom/mojang/blaze3d/vertex/PoseStack;IIIII)V", at = @At("HEAD"), remap = false, cancellable = true)
+    private static void drawForgePingInfo(JoinMultiplayerScreen gui, ServerData oldTarget, PoseStack mStack, int x, int y, int width, int relativeMouseX, int relativeMouseY, CallbackInfo ci) {
+        IServerData data = (IServerData) oldTarget;
+        PingData pingData = data.getPingData();
         int idx;
         String tooltip;
-        if (BCC.remotePingData == null || BCC.localPingData == null || target.forgeData == null)
+        if (pingData == null) {
             return;
-        switch (target.forgeData.type) {
-            case "FML":
-                if (Config.useManifest.get()) {
-                    if ((BCC.remotePingData.manifest.id == BCC.localPingData.manifest.id) && (BCC.remotePingData.manifest.version.id == BCC.localPingData.manifest.version.id)) {
-                        idx = 0;
-                        tooltip = ChatFormatting.DARK_AQUA + "Server is running " + BCC.remotePingData.manifest.name + " " + BCC.remotePingData.manifest.version.id + "\n" + ChatFormatting.DARK_GREEN + "Your version is " + BCC.localPingData.manifest.name + " " + BCC.localPingData.manifest.version.id + "\n";
-                    } else {
-                        idx = 16;
-                        tooltip = ChatFormatting.DARK_RED + "You are not running the same version of the modpack as the server :(\n" + ChatFormatting.RED + "Server is running " + BCC.remotePingData.manifest.name + " " + BCC.remotePingData.manifest.version.id + "\n" + ChatFormatting.RED + "Your version is " + BCC.localPingData.manifest.name + " " + BCC.localPingData.manifest.version.id;
-
-                    }
-                } else {
-                    if ((BCC.remotePingData.name.equals(BCC.localPingData.name)) && (BCC.remotePingData.version.equals(BCC.localPingData.version))) {
-                        idx = 0;
-                        tooltip = ChatFormatting.DARK_AQUA + "Server is running " + BCC.remotePingData.name + " " + BCC.remotePingData.version + "\n" + ChatFormatting.DARK_GREEN + "Your version is " + BCC.localPingData.name + " " + BCC.localPingData.version + "\n";
-                    } else {
-                        idx = 16;
-                        tooltip = ChatFormatting.DARK_RED + "You are not running the same version of the modpack as the server :(\n" + ChatFormatting.RED + "Server is running " + BCC.remotePingData.name + " " + BCC.remotePingData.version + "\n" + ChatFormatting.RED + "Your version is " + BCC.localPingData.name + " " + BCC.localPingData.version;
-
-                    }
-                }
-
-                break;
-            case "VANILLA":
-                if (target.forgeData.isCompatible) {
-                    idx = 48;
-                    tooltip = ForgeI18n.parseMessage("fml.menu.multiplayer.vanilla");
-                } else {
-                    idx = 80;
-                    tooltip = ForgeI18n.parseMessage("fml.menu.multiplayer.vanilla.incompatible");
-                }
-                break;
-            default:
-                idx = 64;
-                tooltip = ForgeI18n.parseMessage("fml.menu.multiplayer.unknown", target.forgeData.type);
         }
 
+        if ((Objects.equals(pingData.name, BCC.localPingData.name)) && (Objects.equals(pingData.version, BCC.localPingData.version))) {
+            idx = 0;
+            tooltip = ChatFormatting.DARK_AQUA + "Server is running " + pingData.name + " " + pingData.version + "\n" + ChatFormatting.DARK_GREEN + "Your version is " + BCC.localPingData.name + " " + BCC.localPingData.version + "\n";
+        } else {
+            idx = 16;
+            tooltip = ChatFormatting.DARK_RED + "You are not running the same version of the modpack as the server :(\n" + ChatFormatting.RED + "Server is running " + pingData.name + " " + pingData.version + "\n" + ChatFormatting.RED + "Your version is " + BCC.localPingData.name + " " + BCC.localPingData.version;
+
+        }
         RenderSystem.setShaderTexture(0, ICON_SHEET);
         GuiComponent.blit(mStack, x + width - 18, y + 10, 16, 16, 0, idx, 16, 16, 256, 256);
 
@@ -77,6 +53,17 @@ public class ForgeClientHooksMixin {
             //this is not the most proper way to do it,
             //but works best here and has the least maintenance overhead
             gui.setToolTip(Arrays.stream(tooltip.split("\n")).map(TextComponent::new).collect(Collectors.toList()));
+        }
+        ci.cancel();
+    }
+
+    @Inject(method = "processForgeListPingData(Lnet/minecraft/network/protocol/status/ServerStatus;Lnet/minecraft/client/multiplayer/ServerData;)V", at = @At("HEAD"), remap = false, cancellable = true)
+    private static void processForgeListPingData(ServerStatus oldPacket, ServerData serverData, CallbackInfo ci) {
+        IServerStatus packet = (IServerStatus) oldPacket;
+        if (packet.getModpackData() != null) {
+            IServerData data = (IServerData) serverData;
+            data.setPingData(packet.getModpackData());
+            ci.cancel();
         }
     }
 }
