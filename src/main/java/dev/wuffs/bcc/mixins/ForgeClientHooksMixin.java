@@ -43,7 +43,7 @@ public class ForgeClientHooksMixin {
             tooltip = ChatFormatting.DARK_AQUA + "Server is running " + pingData.name + " " + pingData.version + "\n" + ChatFormatting.DARK_GREEN + "Your version is " + BCC.localPingData.name + " " + BCC.localPingData.version + "\n";
         } else {
             idx = 16;
-            tooltip = ChatFormatting.DARK_RED + "You are not running the same version of the modpack as the server :(\n" + ChatFormatting.RED + "Server is running " + pingData.name + " " + pingData.version + "\n" + ChatFormatting.RED + "Your version is " + BCC.localPingData.name + " " + BCC.localPingData.version;
+            tooltip = ChatFormatting.GOLD + "You are not running the same version of the modpack as the server :(\n" + ChatFormatting.RED + "Server is running " + pingData.name + " " + pingData.version + "\n" + ChatFormatting.RED + "Your version is " + BCC.localPingData.name + " " + BCC.localPingData.version;
 
         }
         RenderSystem.setShaderTexture(0, ICON_SHEET);

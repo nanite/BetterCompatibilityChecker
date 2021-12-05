@@ -41,7 +41,7 @@ public class BCC {
         if (Config.useMetadata.get()) {
             File metaFile = new File(FMLConfigFolder, "metadata.json");
             if (!metaFile.exists()) {
-                LOGGER.error("No metadata.json found, falling back to config values");
+                LOGGER.warn("No metadata.json found, falling back to config values");
                 localPingData.projectID = Config.modpackProjectID.get();
                 localPingData.name = Config.modpackName.get();
                 localPingData.version = Config.modpackVersion.get();
