@@ -1,0 +1,17 @@
+{
+  "required": true,
+  "package": "dev.wuffs.bcc.mixins",
+  "compatibilityLevel": "JAVA_8",
+  "refmap": "bcc.refmap.json",
+  "mixins": [
+    "ServerStatusMixin",
+    "ServerStatusMixin$ServerStatusSerializerMixin"
+  ],
+  "client": [
+    "ForgeClientHooksMixin",
+    "ServerDataMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

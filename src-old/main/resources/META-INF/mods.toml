@@ -1,0 +1,11 @@
+modLoader="javafml" #mandatory
+loaderVersion="[36,)" #mandatory This is typically bumped every Minecraft version by Forge. See our download page for lists of versions.
+license="All rights reserved"
+[[mods]] #mandatory
+modId="modpacktagger" #mandatory
+version="${file.jarVersion}" #mandatory
+displayName="Modpack Tagger" #mandatory
+authors="Gaz" #optional
+description='''
+Adds the modpack name to the query data
+'''
