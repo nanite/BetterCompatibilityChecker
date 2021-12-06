@@ -201,10 +201,7 @@ artifacts {
 publishing {
     publications {
         mavenJava(MavenPublication) {
-            artifactId = archivesBaseName
-            artifact(jar) {
-                classifier null
-            }
+            artifact jar
             artifact(sourcesJar) {
                 builtBy sourcesJar
             }
