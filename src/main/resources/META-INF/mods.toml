@@ -4,8 +4,8 @@ license="All rights reserved"
 [[mods]] #mandatory
 modId="bcc" #mandatory
 version="${file.jarVersion}" #mandatory
-displayName="Better Compatability Checker" #mandatory
+displayName="Better Compatibility Checker" #mandatory
 authors="Gaz" #optional
 description='''
-Im yet to do this
+A better compatibility checker for Minecraft.
 '''
