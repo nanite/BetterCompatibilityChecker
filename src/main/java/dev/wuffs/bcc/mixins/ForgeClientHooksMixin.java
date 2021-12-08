@@ -42,16 +42,16 @@ public class ForgeClientHooksMixin {
 
         if ((Objects.equals(pingData.name, BCC.localPingData.name)) && (Objects.equals(pingData.version, BCC.localPingData.version))) {
             idx = 0;
-            tooltip = TextFormatting.DARK_AQUA + "Server is running " + pingData.name + " " + pingData.version + "\n" + TextFormatting.DARK_GREEN + "Your version is " + BCC.localPingData.name + " " + BCC.localPingData.version + "\n";
+            tooltip = TextFormatting.DARK_AQUA + "Server is running " + pingData.name + " " + pingData.version + "\n" + TextFormatting.DARK_GREEN + "Your version is " + BCC.localPingData.name + " " + BCC.localPingData.version + "\n \nProvided by Better Compatibility Checker";
         } else {
             idx = 16;
-            tooltip = TextFormatting.GOLD + "You are not running the same version of the modpack as the server :(\n" + TextFormatting.RED + "Server is running " + pingData.name + " " + pingData.version + "\n" + TextFormatting.RED + "Your version is " + BCC.localPingData.name + " " + BCC.localPingData.version;
+            tooltip = TextFormatting.GOLD + "You are not running the same version of the modpack as the server :(\n" + TextFormatting.RED + "Server is running " + pingData.name + " " + pingData.version + "\n" + TextFormatting.RED + "Your version is " + BCC.localPingData.name + " " + BCC.localPingData.version + "\n \nProvided by Better Compatibility Checker";
 
         }
         Minecraft.getInstance().getTextureManager().bind(ICON_SHEET);
         AbstractGui.blit(mStack, x + width - 18, y + 10, 16, 16, 0, idx, 16, 16, 256, 256);
 
-        if(relativeMouseX > width - 15 && relativeMouseX < width && relativeMouseY > 10 && relativeMouseY < 26) {
+        if (relativeMouseX > width - 15 && relativeMouseX < width && relativeMouseY > 10 && relativeMouseY < 26) {
             //this is not the most proper way to do it,
             //but works best here and has the least maintenance overhead
             gui.setToolTip(Arrays.stream(tooltip.split("\n")).map(StringTextComponent::new).collect(Collectors.toList()));
