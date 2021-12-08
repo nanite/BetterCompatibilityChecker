@@ -38,20 +38,18 @@ public class ForgeClientHooksMixin {
             return;
         }
 
-        if ((Objects.equals(pingData.name, BCC.localPingData.name)) && (Objects.equals(pingData.version, BCC.localPingData.version))) {
+        if (BCC.comparePingData(pingData)) {
             idx = 0;
-            tooltip = ChatFormatting.DARK_AQUA + "Server is running " + pingData.name + " " + pingData.version + "\n" + ChatFormatting.DARK_GREEN + "Your version is " + BCC.localPingData.name + " " + BCC.localPingData.version + "\n";
+            tooltip = ChatFormatting.DARK_AQUA + "Server is running " + pingData.name + " " + pingData.version + "\n" + ChatFormatting.DARK_GREEN + "Your version is " + BCC.localPingData.name + " " + BCC.localPingData.version + "\n \nProvided by Better Compatibility Checker";
         } else {
             idx = 16;
-            tooltip = ChatFormatting.GOLD + "You are not running the same version of the modpack as the server :(\n" + ChatFormatting.RED + "Server is running " + pingData.name + " " + pingData.version + "\n" + ChatFormatting.RED + "Your version is " + BCC.localPingData.name + " " + BCC.localPingData.version;
+            tooltip = ChatFormatting.GOLD + "You are not running the same version of the modpack as the server :(\n" + ChatFormatting.RED + "Server is running " + pingData.name + " " + pingData.version + "\n" + ChatFormatting.RED + "Your version is " + BCC.localPingData.name + " " + BCC.localPingData.version + "\n \nProvided by Better Compatibility Checker";
 
         }
         RenderSystem.setShaderTexture(0, ICON_SHEET);
         GuiComponent.blit(mStack, x + width - 18, y + 10, 16, 16, 0, idx, 16, 16, 256, 256);
 
         if (relativeMouseX > width - 15 && relativeMouseX < width && relativeMouseY > 10 && relativeMouseY < 26) {
-            //this is not the most proper way to do it,
-            //but works best here and has the least maintenance overhead
             gui.setToolTip(Arrays.stream(tooltip.split("\n")).map(TextComponent::new).collect(Collectors.toList()));
         }
         ci.cancel();

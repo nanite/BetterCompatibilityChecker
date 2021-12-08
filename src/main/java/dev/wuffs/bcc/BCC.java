@@ -62,4 +62,8 @@ public class BCC {
         localPingData.name = Config.modpackName.get();
         localPingData.version = Config.modpackVersion.get();
     }
+
+    public static boolean comparePingData(PingData pingData) {
+        return pingData.projectID == localPingData.projectID && pingData.name.equals(localPingData.name) && pingData.version.equals(localPingData.version);
+    }
 }
