@@ -26,8 +26,18 @@ public class BCC implements ModInitializer {
     public static PingData localPingData = new PingData();
 
     public BCC() {
-        config = Config.load();
+
+    }
+
+	public static boolean comparePingData(PingData pingData) {
+		return pingData.projectID == localPingData.projectID && pingData.name.equals(localPingData.name) && pingData.version.equals(localPingData.version);
+	}
+
+    @Override
+    public void onInitialize() {
+		config = Config.load();
 		if (config != null) {
+			BCC.getLogger().info("Config file loaded");
 			if(config.useMetadata) {
 				Path metaFile = FabricLoader.getInstance().getConfigDir().resolve("metadata.json");
 				if(!Files.exists(metaFile)) {
@@ -54,9 +64,5 @@ public class BCC implements ModInitializer {
 		}else{
 			getLogger().error("Failed to load config, disabling mod");
 		}
-    }
-
-    @Override
-    public void onInitialize() {
     }
 }
