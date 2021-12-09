@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "id": "bcc",
+  "version": "${version}",
+
+  "name": "BetterCompatibilityChecker",
+  "description": "Checks if the server is running the same version of the modpack as you are",
+  "authors": [
+    "Me!"
+  ],
+
+  "license": "ARR",
+
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "dev.wuffs.bcc.BCC"
+    ]
+  },
+  "mixins": [
+    "bcc.mixins.json"
+  ],
+
+  "depends": {
+    "fabricloader": ">=0.11.3",
+    "fabric": "*",
+    "minecraft": "1.18.x",
+    "java": ">=17"
+  }
+}

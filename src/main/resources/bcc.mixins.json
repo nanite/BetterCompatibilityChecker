@@ -1,0 +1,19 @@
+{
+  "required": true,
+  "package": "dev.wuffs.bcc.mixins",
+  "compatibilityLevel": "JAVA_17",
+  "refmap": "bcc.refmap.json",
+  "mixins": [
+    "ServerMetadataMixin",
+    "ServerMetadataMixin$ServerStatusSerializerMixin"
+  ],
+  "client": [
+    "MultiplayerServerListPingerMixin",
+    "MultiplayerServerListWidgetMixin",
+    "MultiplayerServerListWidgetMixin$ServerEntryMixin",
+    "ServerInfoMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
