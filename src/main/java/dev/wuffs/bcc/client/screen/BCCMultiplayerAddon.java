@@ -13,7 +13,6 @@ import net.minecraft.text.LiteralText;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 
-import java.awt.*;
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
