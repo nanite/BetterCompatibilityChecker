@@ -14,7 +14,7 @@ import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 
 public class Config {
-    static Path configFile = FabricLoader.getInstance().getConfigDir().resolve("/bcc.json");
+    static Path configFile = FabricLoader.getInstance().getConfigDir().resolve(BCC.MODID + ".json");
 
     public static boolean create(){
         BCC.getLogger().warn("Config file not found, creating default config");
