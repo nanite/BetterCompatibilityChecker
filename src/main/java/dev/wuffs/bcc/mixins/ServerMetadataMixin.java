@@ -33,7 +33,7 @@ public class ServerMetadataMixin implements IServerMetadata {
     @Mixin(ServerMetadata.Deserializer.class)
     public static class ServerStatusSerializerMixin {
 
-        @Inject(method = "serialize(Lnet/minecraft/server/ServerMetadata;Ljava/lang/reflect/Type;Lcom/google/gson/JsonSerializationContext;)Lcom/google/gson/JsonElement;", at = @At("RETURN"), remap = false)
+        @Inject(method = "serialize(Lnet/minecraft/server/ServerMetadata;Ljava/lang/reflect/Type;Lcom/google/gson/JsonSerializationContext;)Lcom/google/gson/JsonElement;", at = @At("RETURN"))
         private void serialize(ServerMetadata serverStatus, Type type, JsonSerializationContext jsonSerializationContext, CallbackInfoReturnable<JsonElement> cir) {
             JsonObject jsonObject = cir.getReturnValue().getAsJsonObject();
             if (BCC.localPingData != null) {
@@ -41,7 +41,7 @@ public class ServerMetadataMixin implements IServerMetadata {
             }
         }
 
-        @Inject(method = "deserialize(Lcom/google/gson/JsonElement;Ljava/lang/reflect/Type;Lcom/google/gson/JsonDeserializationContext;)Lnet/minecraft/server/ServerMetadata;", at = @At("RETURN"), remap = false)
+        @Inject(method = "deserialize(Lcom/google/gson/JsonElement;Ljava/lang/reflect/Type;Lcom/google/gson/JsonDeserializationContext;)Lnet/minecraft/server/ServerMetadata;", at = @At("RETURN"))
         private void deserialize(JsonElement jsonElement, Type type, JsonDeserializationContext context, CallbackInfoReturnable<ServerMetadata> cir) {
             JsonObject jsonObject = jsonElement.getAsJsonObject();
             if (jsonObject.has("modpackData")) {

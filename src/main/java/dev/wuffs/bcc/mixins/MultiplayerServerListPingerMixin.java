@@ -11,15 +11,14 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-
-@Mixin(targets = "net.minecraft.client.network.MultiplayerServerListPinger$1")
+@Mixin(targets = "net/minecraft/client/network/MultiplayerServerListPinger$1")
 public class MultiplayerServerListPingerMixin {
 
     @Shadow
     @Final
     ServerInfo field_3776;
 
-    @Inject(method = "onResponse", at = @At("HEAD"), remap = false)
+    @Inject(method = "onResponse(Lnet/minecraft/network/packet/s2c/query/QueryResponseS2CPacket;)V", at = @At("HEAD"))
     public void onResponse(QueryResponseS2CPacket packet, CallbackInfo ci) {
         IServerMetadata serverMetadata = (IServerMetadata) packet.getServerMetadata();
         if (serverMetadata.getModpackData() != null) {
