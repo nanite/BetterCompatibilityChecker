@@ -34,8 +34,11 @@ public class BCCMultiplayerAddon {
             tooltip = Formatting.DARK_AQUA + "Server is running " + pingData.name + " " + pingData.version + "\n" + Formatting.DARK_GREEN + "Your version is " + BCC.localPingData.name + " " + BCC.localPingData.version + "\n \nProvided by Better Compatibility Checker";
         } else {
             idx = 16;
-            tooltip = Formatting.GOLD + "You are not running the same version of the modpack as the server :(\n" + Formatting.RED + "Server is running " + pingData.name + " " + pingData.version + "\n" + Formatting.RED + "Your version is " + BCC.localPingData.name + " " + BCC.localPingData.version + "\n \nProvided by Better Compatibility Checker";
-
+            tooltip = Formatting.GOLD + "You are not running the same version\n" + Formatting.GOLD + "of the modpack as the server :(\n" + Formatting.RED + "Server is running " + pingData.name + " " + pingData.version + "\n" + Formatting.RED + "Your version is " + BCC.localPingData.name + " " + BCC.localPingData.version + "\n \nProvided by Better Compatibility Checker";
+//            tooltip = Formatting.GOLD + "You are not running the same version\n" + Formatting.GOLD + "of the modpack as the server :(\n \n" +
+//                    Formatting.RED + "Server: " + pingData.name + " " + pingData.version + "\n" +
+//                    Formatting.RED + "Client (You): " + BCC.localPingData.name + " " + BCC.localPingData.version +
+//                    "\n \nProvided by Better Compatibility Checker";
         }
 
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
