@@ -10,6 +10,7 @@ import net.minecraft.client.gui.screens.multiplayer.JoinMultiplayerScreen;
 import net.minecraft.client.multiplayer.ServerData;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraftforge.common.ForgeI18n;
 import net.minecraftforge.versions.forge.ForgeVersion;
 
 import java.util.Arrays;
@@ -18,20 +19,19 @@ import java.util.stream.Collectors;
 public class BCCMultiplayerAddon {
 
     private static final ResourceLocation ICON_SHEET = new ResourceLocation(ForgeVersion.MOD_ID, "textures/gui/icons.png");
-    public static void drawBCCChecker(JoinMultiplayerScreen gui, PingData pingData, PoseStack mStack, int x, int y, int width, int relativeMouseX, int relativeMouseY){
+
+    public static void drawBCCChecker(JoinMultiplayerScreen gui, PingData pingData, PoseStack mStack, int x, int y, int width, int relativeMouseX, int relativeMouseY) {
         int idx;
         String tooltip;
 
         if (BCC.comparePingData(pingData)) {
             idx = 0;
-            tooltip = ChatFormatting.DARK_AQUA + "Server is running " + pingData.name + " " + pingData.version + "\n" + ChatFormatting.DARK_GREEN + "Your version is " + BCC.localPingData.name + " " + BCC.localPingData.version + "\n \nProvided by Better Compatibility Checker";
+            tooltip = ForgeI18n.parseMessage("bcc.gui.tooltip.compatible_server", (pingData.name + " " + pingData.version), (BCC.localPingData.name + " " + BCC.localPingData.version));
+            tooltip = tooltip + "\n \n§8Better Compatibility Checker";
         } else {
             idx = 16;
-            tooltip = ChatFormatting.GOLD + "You are not running the same version of the modpack as the server :(\n" + ChatFormatting.RED + "Server is running " + pingData.name + " " + pingData.version + "\n" + ChatFormatting.RED + "Your version is " + BCC.localPingData.name + " " + BCC.localPingData.version + "\n \nProvided by Better Compatibility Checker";
-//            tooltip = ChatFormatting.GOLD + "You are not running the same version of the modpack as the server :(\n \n" +
-//                    ChatFormatting.RED + "Server: " + pingData.name + " " + pingData.version + "\n" +
-//                    ChatFormatting.RED + "Client (You): " + BCC.localPingData.name + " " + BCC.localPingData.version +
-//                    "\n \nProvided by Better Compatibility Checker";
+            tooltip = ForgeI18n.parseMessage("bcc.gui.tooltip.incompatible_server", (pingData.name + " " + pingData.version), (BCC.localPingData.name + " " + BCC.localPingData.version));
+            tooltip = tooltip + "\n \n§8Better Compatibility Checker";
         }
         RenderSystem.setShaderTexture(0, ICON_SHEET);
         GuiComponent.blit(mStack, x + width - 18, y + 10, 16, 16, 0, idx, 16, 16, 256, 256);
