@@ -32,19 +32,21 @@ public class BCC {
     public static PingData localPingData = new PingData();
 
     public BCC() {
+        getLogger().info("Better Compatibility Checker loading");
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, Config.CONFIG);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::doCommonSetup);
         ModLoadingContext.get().registerExtensionPoint(IExtensionPoint.DisplayTest.class, () -> new IExtensionPoint.DisplayTest(() -> NetworkConstants.IGNORESERVERONLY, (a, b) -> true));
     }
 
     private void doCommonSetup(final FMLCommonSetupEvent event) {
+        getLogger().info("Better Compatibility Checker setting up");
         if(Config.useMetadata.get()) {
             Path metaFile = FMLPaths.CONFIGDIR.get().resolve("metadata.json");
             if(!Files.exists(metaFile)) {
-                LOGGER.error("No metadata.json found, falling back to config values");
+                getLogger().error("No metadata.json found, falling back to config values");
             }else {
                 try {
-                    LOGGER.info("Loading metadata.json");
+                    getLogger().info("Loading metadata.json");
                     Metadata metadata = new Gson().fromJson(Files.newBufferedReader(metaFile), Metadata.class);
                     localPingData.projectID = metadata.id;
                     localPingData.name = metadata.name;
@@ -54,7 +56,7 @@ public class BCC {
                     localPingData.isMetadata = true;
                     return;
                 }catch(IOException e) {
-                    LOGGER.error("Failed to read metadata.json", e);
+                    getLogger().error("Failed to read metadata.json", e);
                 }
             }
         }
