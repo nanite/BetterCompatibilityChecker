@@ -25,7 +25,7 @@ def ENV = System.getenv()
 
 version = "${mod_version}-build.${ENV.GITHUB_RUN_NUMBER ?: 9999}+mc${minecraft_version}"
 group = 'dev.wuffs' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
-archivesBaseName = 'bcc'
+archivesBaseName = 'BetterCompatibilityChecker'
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(8) // Mojang ships Java 8 to end users, so your mod should target Java 8.
 
