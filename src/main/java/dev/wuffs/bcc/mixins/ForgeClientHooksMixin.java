@@ -32,7 +32,7 @@ public class ForgeClientHooksMixin {
         IServerData data = (IServerData) oldTarget;
         PingData pingData = data.getPingData();
 
-        if (pingData == null) {
+        if (pingData == null || BCC.localPingData == null) {
             return;
         }
         BCCMultiplayerAddon.drawBCCChecker(gui, pingData, mStack, x, y, width, relativeMouseX, relativeMouseY);
