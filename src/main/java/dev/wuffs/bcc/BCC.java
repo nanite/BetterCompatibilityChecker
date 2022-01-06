@@ -25,7 +25,7 @@ import java.nio.file.Path;
 public class BCC {
     public static final String MODID = "bcc";
     // Directly reference a log4j logger.
-    private static final Logger LOGGER = LogManager.getLogger();
+    private static final Logger LOGGER = LogManager.getLogger("Better Compatability Checker (bcc)");
 
     public static Logger getLogger() {
         return LOGGER;
