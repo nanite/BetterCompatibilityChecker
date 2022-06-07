@@ -1,26 +1,16 @@
 package dev.wuffs.bcc.mixins;
 
-import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import dev.wuffs.bcc.*;
 import dev.wuffs.bcc.client.screen.BCCMultiplayerAddon;
-import net.minecraft.ChatFormatting;
-import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.gui.screens.multiplayer.JoinMultiplayerScreen;
 import net.minecraft.client.multiplayer.ServerData;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.protocol.status.ServerStatus;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.client.ForgeHooksClient;
-import net.minecraftforge.versions.forge.ForgeVersion;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-
-import java.util.Arrays;
-import java.util.Objects;
-import java.util.stream.Collectors;
 
 @Mixin(value = ForgeHooksClient.class, remap = false)
 public class ForgeClientHooksMixin {
