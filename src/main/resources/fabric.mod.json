@@ -6,7 +6,7 @@
   "name": "BetterCompatibilityChecker",
   "description": "Checks if the server is running the same version of the modpack as you are",
   "authors": [
-    "Me!"
+    "Gaz"
   ],
 
   "license": "ARR",
@@ -22,8 +22,7 @@
   ],
 
   "depends": {
-    "fabricloader": ">=0.12.9",
-    "fabric": "*",
+    "fabricloader": ">=0.14.6",
     "minecraft": "1.19.x",
     "java": ">=17"
   }
