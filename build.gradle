@@ -10,7 +10,7 @@ targetCompatibility = JavaVersion.VERSION_17
 def ENV = System.getenv()
 
 archivesBaseName = project.archives_base_name
-version = "${project.mod_version}-build.${ENV.GITHUB_RUN_NUMBER ?: 9999}"
+version = "${mod_version}-build.${ENV.GITHUB_RUN_NUMBER ?: 9999}+mc${minecraft_version}"
 group = project.maven_group
 
 repositories {
