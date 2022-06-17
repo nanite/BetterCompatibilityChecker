@@ -4,17 +4,15 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import dev.wuffs.bcc.BCC;
 import dev.wuffs.bcc.IServerInfo;
 import dev.wuffs.bcc.PingData;
-import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.gui.screen.multiplayer.MultiplayerScreen;
 import net.minecraft.client.network.ServerInfo;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.text.LiteralText;
-import net.minecraft.text.TranslatableText;
+import net.minecraft.text.Text;
+import net.minecraft.text.TranslatableTextContent;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.Language;
 
 import java.util.Arrays;
 import java.util.stream.Collectors;
@@ -34,11 +32,11 @@ public class BCCMultiplayerAddon {
 
         if (BCC.comparePingData(pingData)) {
             idx = 0;
-            tooltip = new TranslatableText("bcc.gui.tooltip.compatible_server", (pingData.name + " " + pingData.version), (BCC.localPingData.name + " " + BCC.localPingData.version)).getString();
+            tooltip = Text.translatable("bcc.gui.tooltip.compatible_server", (pingData.name + " " + pingData.version), (BCC.localPingData.name + " " + BCC.localPingData.version)).getString();
             tooltip = tooltip + "\n \n" + Formatting.DARK_GRAY + "Better Compatibility Checker";
         } else {
             idx = 16;
-            tooltip = new TranslatableText("bcc.gui.tooltip.incompatible_server", (pingData.name + " " + pingData.version), (BCC.localPingData.name + " " + BCC.localPingData.version)).getString();
+            tooltip = Text.translatable("bcc.gui.tooltip.incompatible_server", (pingData.name + " " + pingData.version), (BCC.localPingData.name + " " + BCC.localPingData.version)).getString();
             tooltip = tooltip + "\n \n" + Formatting.DARK_GRAY + "Better Compatibility Checker";
         }
 
@@ -48,7 +46,7 @@ public class BCCMultiplayerAddon {
         DrawableHelper.drawTexture(mStack, x + width - 18, y + 10, 16, 16, 0, idx, 16, 16, 16, 32);
 
         if (relativeMouseX > width - 15 && relativeMouseX < width && relativeMouseY > 10 && relativeMouseY < 26) {
-            gui.setTooltip(Arrays.stream(tooltip.split("\n")).map(LiteralText::new).collect(Collectors.toList()));
+            gui.setTooltip(Arrays.stream(tooltip.split("\n")).map(Text::literal).collect(Collectors.toList()));
         }
     }
 }
