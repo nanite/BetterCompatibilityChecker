@@ -9,6 +9,7 @@ import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.gui.screens.multiplayer.JoinMultiplayerScreen;
 import net.minecraft.client.multiplayer.ServerData;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextColor;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.common.ForgeI18n;
 import net.minecraftforge.versions.forge.ForgeVersion;
@@ -27,12 +28,11 @@ public class BCCMultiplayerAddon {
         if (BCC.comparePingData(pingData)) {
             idx = 0;
             tooltip = ForgeI18n.parseMessage("bcc.gui.tooltip.compatible_server", (pingData.name + " " + pingData.version), (BCC.localPingData.name + " " + BCC.localPingData.version));
-            tooltip = tooltip + "\n \n§8Better Compatibility Checker";
         } else {
             idx = 16;
             tooltip = ForgeI18n.parseMessage("bcc.gui.tooltip.incompatible_server", (pingData.name + " " + pingData.version), (BCC.localPingData.name + " " + BCC.localPingData.version));
-            tooltip = tooltip + "\n \n§8Better Compatibility Checker";
         }
+        tooltip = tooltip + "\n \n" + ChatFormatting.DARK_GRAY + "Better Compatibility Checker";
         RenderSystem.setShaderTexture(0, ICON_SHEET);
         GuiComponent.blit(mStack, x + width - 18, y + 10, 16, 16, 0, idx, 16, 16, 256, 256);
 
