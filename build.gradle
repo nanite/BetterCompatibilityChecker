@@ -27,6 +27,9 @@ dependencies {
 	mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
 //	mappings loom.officialMojangMappings()
 	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
+
+	// Fabric API. This is technically optional, but you probably want it anyway.
+	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 }
 
 processResources {
@@ -83,11 +86,13 @@ if (ENV.CURSE_DEPLOY) {
 		apiKey = ENV.CURSE_DEPLOY
 		project {
 			id = project.curseforge_id
-			releaseType = "release"
+			releaseType = "beta"
 			addGameVersion "Fabric"
 			addGameVersion "${minecraft_version}"
 			addGameVersion "Java 17"
-
+			relations {
+				requiredDependency 'fabric-api'
+			}
 			mainArtifact(remapJar.archivePath)
 			changelog = file("./CHANGELOG.md")
 			changelogType = 'markdown'
