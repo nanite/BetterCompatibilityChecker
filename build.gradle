@@ -223,7 +223,7 @@ if (ENV.CURSE_DEPLOY) {
             addGameVersion "Forge"
             addGameVersion "${minecraft_version}"
             mainArtifact(jar)
-            changelog = getGitChangelog
+            changelog = file("../CHANGELOG.md")
             changelogType = 'markdown'
         }
     }
