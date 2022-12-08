@@ -9,6 +9,7 @@ import net.minecraft.client.gui.screen.multiplayer.MultiplayerScreen;
 import net.minecraft.client.network.ServerInfo;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.text.OrderedText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
@@ -39,13 +40,13 @@ public class BCCMultiplayerAddon {
             tooltip = tooltip + "\n \n" + Formatting.DARK_GRAY + "Better Compatibility Checker";
         }
 
-        RenderSystem.setShader(GameRenderer::getPositionTexShader);
+        RenderSystem.setShader(GameRenderer::getPositionTexProgram);
         RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
         RenderSystem.setShaderTexture(0, ICON_SHEET);
         DrawableHelper.drawTexture(mStack, x + width - 18, y + 10, 16, 16, 0, idx, 16, 16, 16, 32);
 
         if (relativeMouseX > width - 15 && relativeMouseX < width && relativeMouseY > 10 && relativeMouseY < 26) {
-            gui.setTooltip(Arrays.stream(tooltip.split("\n")).map(Text::literal).collect(Collectors.toList()));
+            gui.setTooltip(Arrays.stream(tooltip.split("\n")).map(e -> Text.literal(e).asOrderedText()).collect(Collectors.toList()));
         }
     }
 }
