@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.1.0]
+
+- Updated to 1.19.3
+
 ## [1.0.10]
 
 - Bumped forge version
