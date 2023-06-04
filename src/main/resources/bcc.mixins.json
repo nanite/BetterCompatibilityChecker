@@ -4,12 +4,16 @@
   "compatibilityLevel": "JAVA_17",
   "refmap": "bcc.refmap.json",
   "mixins": [
-    "ServerStatusMixin",
-    "ServerStatusMixin$ServerStatusSerializerMixin"
+    "StatusDataMixin",
+    "ClientboundStatusResponsePacketMixin"
   ],
   "client": [
+    "ServerStatusPingerMixin",
     "ForgeClientHooksMixin",
     "ServerDataMixin"
+  ],
+  "server": [
+    "MinecraftServerMixinn"
   ],
   "injectors": {
     "defaultRequire": 1

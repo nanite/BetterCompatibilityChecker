@@ -1,7 +1,8 @@
 package dev.wuffs.bcc;
 
 import com.google.gson.Gson;
-import com.google.gson.stream.JsonReader;
+import dev.wuffs.bcc.data.BetterStatus;
+import dev.wuffs.bcc.data.BetterStatusServerHolder;
 import net.minecraftforge.fml.IExtensionPoint;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
@@ -13,59 +14,60 @@ import net.minecraftforge.network.NetworkConstants;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-// The value here should match an entry in the META-INF/mods.toml file
 @Mod(BCC.MODID)
 public class BCC {
-    public static final String MODID = "bcc";
-    // Directly reference a log4j logger.
     private static final Logger LOGGER = LogManager.getLogger();
 
-    public static Logger getLogger() {
-        return LOGGER;
-    }
-    public static PingData localPingData = new PingData();
+    public static final String MODID = "bcc";
 
     public BCC() {
-        getLogger().info("Better Compatibility Checker loading");
+        LOGGER.info("Better Compatibility Checker loading");
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, Config.CONFIG);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::doCommonSetup);
         ModLoadingContext.get().registerExtensionPoint(IExtensionPoint.DisplayTest.class, () -> new IExtensionPoint.DisplayTest(() -> NetworkConstants.IGNORESERVERONLY, (a, b) -> true));
     }
 
     private void doCommonSetup(final FMLCommonSetupEvent event) {
-        getLogger().info("Better Compatibility Checker setting up");
+        LOGGER.info("Better Compatibility Checker setting up");
         if(Config.useMetadata.get()) {
             Path metaFile = FMLPaths.CONFIGDIR.get().resolve("metadata.json");
             if(!Files.exists(metaFile)) {
-                getLogger().error("No metadata.json found, falling back to config values");
+                LOGGER.error("No metadata.json found, falling back to config values");
             }else {
                 try {
-                    getLogger().info("Loading metadata.json");
+                    LOGGER.info("Loading metadata.json");
                     Metadata metadata = new Gson().fromJson(Files.newBufferedReader(metaFile), Metadata.class);
-                    localPingData.projectID = metadata.id;
-                    localPingData.name = metadata.name;
-                    localPingData.version = metadata.version.name;
-                    localPingData.versionID = metadata.version.id;
-                    localPingData.releaseType = metadata.version.type;
-                    localPingData.isMetadata = true;
+                    BetterStatusServerHolder.INSTANCE.setStatus(new BetterStatus(
+                            metadata.id,
+                            metadata.name,
+                            metadata.version.name,
+                            metadata.version.id,
+                            metadata.version.type,
+                            true
+                    ));
                     return;
                 }catch(IOException e) {
-                    getLogger().error("Failed to read metadata.json", e);
+                    LOGGER.error("Failed to read metadata.json", e);
                 }
             }
         }
-        localPingData.projectID = Config.modpackProjectID.get();
-        localPingData.name = Config.modpackName.get();
-        localPingData.version = Config.modpackVersion.get();
+
+        BetterStatusServerHolder.INSTANCE.setStatus(new BetterStatus(
+                Config.modpackProjectID.get(),
+                Config.modpackName.get(),
+                Config.modpackVersion.get(),
+                -1,
+                "unknown",
+                false
+        ));
     }
 
-    public static boolean comparePingData(PingData pingData) {
-        return pingData.projectID == localPingData.projectID && pingData.name.equals(localPingData.name) && pingData.version.equals(localPingData.version);
+    public static boolean comparePingData(BetterStatus pingData) {
+        BetterStatus status = BetterStatusServerHolder.INSTANCE.getStatus();
+        return pingData.projectId() == status.projectId() && pingData.name().equals(status.name()) && pingData.version().equals(status.version());
     }
 }

@@ -2,19 +2,17 @@ package dev.wuffs.bcc.mixins;
 
 import dev.wuffs.bcc.contract.ServerDataExtension;
 import dev.wuffs.bcc.data.BetterStatus;
-import net.minecraft.client.multiplayer.ServerData;
+import net.minecraft.network.protocol.status.ServerStatus;
 import org.spongepowered.asm.mixin.Mixin;
 
-@Mixin(ServerData.class)
-public class ServerDataMixin implements ServerDataExtension {
-    public BetterStatus betterStatus;
+@Mixin(ServerStatus.class)
+public class StatusDataMixin implements ServerDataExtension {
+    private BetterStatus betterStatus; // TODO: This might not be safe being null. I don't understand codecs
 
-    @Override
     public void setBetterData(BetterStatus status) {
         this.betterStatus = status;
     }
 
-    @Override
     public BetterStatus getBetterData() {
         return this.betterStatus;
     }
