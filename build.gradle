@@ -137,8 +137,8 @@ if (ENV.CURSE_TOKEN) {
             id = project.curseforge_id
             releaseType = "release"
             addGameVersion "Forge"
-            addGameVersion "Server"
-            addGameVersion "Client"
+//            addGameVersion "Server"
+//            addGameVersion "Client"
             addGameVersion "${minecraft_version}"
             mainArtifact(jar)
             changelog = file("./CHANGELOG.md")
