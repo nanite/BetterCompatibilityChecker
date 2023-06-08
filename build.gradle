@@ -142,9 +142,11 @@ task publishCurseForge(type: net.darkhax.curseforgegradle.TaskPublishCurseForge)
     mainFile.releaseType = 'release'
     mainFile.changelog = file("./CHANGELOG.md")
     mainFile.changelogType = 'markdown'
-    mainFile.addJavaVersion("17")
+    mainFile.addJavaVersion("Java 17")
     mainFile.addGameVersion(project.minecraft_version)
-    mainFile.addModLoader("forge")
+    mainFile.addModLoader("Forge")
+    mainFile.addGameVersion("Server")
+    mainFile.addGameVersion("Client")
 }
 //    curseforge {
 //        apiKey = ENV.CURSE_TOKEN
