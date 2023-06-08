@@ -13,3 +13,5 @@ jobs:
     secrets:
       nanite-token: ${{ secrets.NANITE_DEPLOY }}
       curse-token: ${{ secrets.CURSE_DEPLOY }}
+    with:
+      curse-publish-task: publishCurseForge

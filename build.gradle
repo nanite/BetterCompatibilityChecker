@@ -2,7 +2,7 @@ plugins {
     id 'eclipse'
     id 'maven-publish'
     id 'net.minecraftforge.gradle' version '[6.0,6.2)'
-    id "com.matthewprenger.cursegradle" version "1.4.0"
+    id 'net.darkhax.curseforgegradle' version '1.0.14'
     id 'org.spongepowered.mixin' version '0.7.+'
 }
 
@@ -130,22 +130,35 @@ publishing {
     }
 }
 
-if (ENV.CURSE_TOKEN) {
-    curseforge {
-        apiKey = ENV.CURSE_TOKEN
-        project {
-            id = project.curseforge_id
-            releaseType = "release"
-            addGameVersion "Forge"
-//            addGameVersion "Server"
-//            addGameVersion "Client"
-            addGameVersion "${minecraft_version}"
-            mainArtifact(jar)
-            changelog = file("./CHANGELOG.md")
-            changelogType = 'markdown'
-        }
-    }
+
+// CurseForgeGradle
+
+task publishCurseForge(type: net.darkhax.curseforgegradle.TaskPublishCurseForge) {
+
+    apiToken = ENV.CURSE_TOKEN
+
+    // The main file to upload
+    def mainFile = upload(project.curseforge_id, jar)
+    mainFile.releaseType = 'release'
+    mainFile.changelog = file("./CHANGELOG.md")
+    mainFile.changelogType = 'markdown'
+    mainFile.addJavaVersion("17")
+    mainFile.addGameVersion(project.minecraft_version)
+    mainFile.addModLoader("forge")
 }
+//    curseforge {
+//        apiKey = ENV.CURSE_TOKEN
+//        project {
+//            id = project.curseforge_id
+//            releaseType = "release"
+//            addGameVersion "Forge"
+//            addGameVersion "${minecraft_version}"
+//            mainArtifact(jar)
+//            changelog = file("./CHANGELOG.md")
+//            changelogType = 'markdown'
+//        }
+//    }
+//}
 
 tasks.register('lazyMikey') { task ->
     doLast {
