@@ -145,8 +145,8 @@ task publishCurseForge(type: net.darkhax.curseforgegradle.TaskPublishCurseForge)
     mainFile.addJavaVersion("Java 17")
     mainFile.addGameVersion(project.minecraft_version)
     mainFile.addModLoader("Forge")
-    mainFile.addGameVersion("Server")
-    mainFile.addGameVersion("Client")
+//    mainFile.addGameVersion("Server")
+//    mainFile.addGameVersion("Client")
 }
 //    curseforge {
 //        apiKey = ENV.CURSE_TOKEN
