@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.0.2]
+
+- Fix the fix crash
+
 ## [2.0.1]
 
 - Fix Crash
