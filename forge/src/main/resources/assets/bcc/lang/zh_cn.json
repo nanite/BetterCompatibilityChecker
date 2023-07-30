@@ -1,0 +1,4 @@
+{
+  "bcc.gui.tooltip.compatible_server": "§3服务器版本: {0}\n§2您的客户端版本: {1}",
+  "bcc.gui.tooltip.incompatible_server": "§6您的客户端版本与服务器版本不匹配:(\n \n§4服务器版本: {0}\n§4您的客户端版本: {1}"
+}

@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 1,
+  "id": "bcc",
+  "version": "${mod_version}",
+  "name": "${mod_name}",
+  "description": "Checks if the server is running the same version of the modpack as you are",
+  "authors": [
+    "${mod_author}"
+  ],
+  "contact": {
+    "homepage": "https://github.com/nanite/BetterCompatibilityChecker",
+    "sources": "https://github.com/nanite/BetterCompatibilityChecker"
+  },
+  "license": "ARR",
+  "icon": "assets/modid/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+        "dev.wuffs.bcc.BCCFabric"
+    ]
+  },
+  "mixins": [
+    "bcc.mixins.json",
+    "bcc.fabric.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.14",
+    "fabric": "*",
+    "minecraft": "1.20.1",
+    "java": ">=17"
+  },
+  "suggests": {
+    "another-mod": "*"
+  }
+}
+  

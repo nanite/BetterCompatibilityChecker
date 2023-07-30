@@ -1,0 +1,21 @@
+{
+    "required": true,
+    "minVersion": "0.8",
+    "package": "dev.wuffs.bcc.mixin",
+    "refmap": "${mod_id}.refmap.json",
+    "compatibilityLevel": "JAVA_17",
+    "mixins": [
+        "StatusDataMixin",
+        "ClientboundStatusResponsePacketMixin"
+    ],
+    "client": [
+        "ServerDataMixin"
+    ],
+    "server": [
+        "MinecraftServerMixinn"
+    ],
+    "injectors": {
+        "defaultRequire": 1
+    }
+}
+
