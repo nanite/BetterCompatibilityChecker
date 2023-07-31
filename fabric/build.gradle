@@ -65,18 +65,14 @@ publishing {
         }
     }
     repositories {
-        if (ENV.NANITE_TOKEN) {
+        if (providers.environmentVariable("NANITE_TOKEN").orNull) {
             maven {
                 url "https://maven.nanite.dev/${isSnapshot ? 'snapshots' : 'releases'}"
                 credentials {
                     username = "nanite"
-                    password = "${ENV.NANITE_TOKEN}"
+                    password = providers.environmentVariable("NANITE_TOKEN").get()
                 }
             }
         }
     }
-}
-
-if (ENV.CURSE_TOKEN) {
-    // todo insert modmuss or darkhax curse publish here
 }

@@ -1,25 +1,23 @@
 plugins {
-    id 'fabric-loom' version '1.2-SNAPSHOT' apply(false)
+    id 'fabric-loom' version '1.3-SNAPSHOT' apply(false)
     id 'net.minecraftforge.gradle' version '[6.0,6.2)' apply(false)
     id 'org.spongepowered.gradle.vanilla' version '0.2.1-SNAPSHOT' apply(false)
-    id("org.spongepowered.mixin") version "${mixin_version}" apply(false)
+    id "org.spongepowered.mixin" version "${mixin_version}" apply(false)
     id "me.modmuss50.mod-publish-plugin" version "0.2.0"
+}
+
+ext.isSnapshot = providers.environmentVariable("SNAPSHOT").map {it == "true"}.getOrElse(false)
+
+allprojects {
+    version = "${mod_version}+mc${minecraft_version}${isSnapshot ? '-SNAPSHOT' : ''}"
 }
 
 subprojects {
     apply plugin: 'java'
 
-    def ENV = System.getenv()
-    def isSnapshot = ENV.SNAPSHOT == "true"
-
-    ext.ENV = ENV
-    ext.isSnapshot = isSnapshot
-
     base {
         archivesName = "${mod_name}-${project.name}"
     }
-
-    version = "${mod_version}+mc${minecraft_version}${isSnapshot ? '-SNAPSHOT' : ''}"
 
     java.toolchain.languageVersion = JavaLanguageVersion.of(17)
     java.withSourcesJar()
@@ -84,9 +82,9 @@ subprojects {
 }
 
 publishMods {
+    dryRun = providers.environmentVariable("CURSE_TOKEN").orElse(null).map { it == null }
     changelog = file("./CHANGELOG.md").text
     type = STABLE
-
 
     def options = curseforgeOptions {
         projectId = "${curseforge_id}"
@@ -111,11 +109,14 @@ publishMods {
         }
 
     }
+
+//    Todo: WILL ADD MODRINTH ONCE THEY FIX THEIR OVERREACHING TOS
 //        modrinth {
 //            projectId = "abcdef"
 //            accessToken = providers.environmentVariable("MODRINTH_TOKEN")
 //            minecraftVersions.add("1.20.1")
 //        }
+
 //        github {
 //            repository = "test/example"
 //            accessToken = providers.environmentVariable("GITHUB_TOKEN")
