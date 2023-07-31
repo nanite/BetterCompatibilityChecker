@@ -4,8 +4,12 @@ plugins {
     id 'maven-publish'
     id 'org.spongepowered.gradle.vanilla'
 }
+
+def ENV = System.getenv()
+def isSnapshot = ENV.SNAPSHOT == "true"
+
 base {
-    archivesName = "${mod_name}-common-${minecraft_version}"
+    archivesName = "${mod_name}-common-${mod_version}-build.${ENV.GITHUB_RUN_NUMBER ?: 9999}+mc${minecraft_version}${isSnapshot ? '-SNAPSHOT' : ''}"
 }
 minecraft {
     version(minecraft_version)

@@ -4,8 +4,12 @@ plugins {
     id 'maven-publish'
     id 'fabric-loom'
 }
+
+def ENV = System.getenv()
+def isSnapshot = ENV.SNAPSHOT == "true"
+
 base {
-    archivesName = "${mod_name}-fabric-${minecraft_version}"
+    archivesName = "${mod_name}-fabric-${mod_version}-build.${ENV.GITHUB_RUN_NUMBER ?: 9999}+mc${minecraft_version}${isSnapshot ? '-SNAPSHOT' : ''}"
 }
 dependencies {
     minecraft "com.mojang:minecraft:${minecraft_version}"
@@ -15,10 +19,6 @@ dependencies {
     implementation group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.1'
     implementation project(":common")
 }
-
-def ENV = System.getenv()
-
-version = "${mod_version}-build.${ENV.GITHUB_RUN_NUMBER ?: 9999}+mc${minecraft_version}"
 
 loom {
     if (project(":common").file("src/main/resources/${mod_id}.accesswidener").exists()) {
@@ -81,18 +81,5 @@ publishing {
 }
 
 if (ENV.CURSE_TOKEN) {
-    curseforge {
-        apiKey = ENV.CURSE_TOKEN
-        project {
-            id = project.curseforge_id
-            releaseType = "release"
-            addGameVersion "Forge"
-            addGameVersion "Server"
-            addGameVersion "Client"
-            addGameVersion "${minecraft_version}"
-            mainArtifact(jar)
-            changelog = file("./CHANGELOG.md")
-            changelogType = 'markdown'
-        }
-    }
+    // todo insert modmuss or darkhax curse publish here
 }

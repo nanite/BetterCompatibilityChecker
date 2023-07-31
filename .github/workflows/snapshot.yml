@@ -1,0 +1,17 @@
+name: Build & Snapshot
+
+on:
+  push:
+    branches:
+      - "*"
+
+jobs:
+  build:
+    if: |
+      !contains(github.event.head_commit.message, '[ciskip]')
+    uses: nanite/workflows/.github/workflows/base-java.yml@v1
+    secrets:
+      nanite-token: ${{ secrets.NANITE_DEPLOY }}
+    with:
+      use-snapshots: true
+      gradle-tasks: build publish
