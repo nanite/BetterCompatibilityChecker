@@ -16,6 +16,7 @@ public class BCCFabric implements ModInitializer {
     
     @Override
     public void onInitialize() {
+        Constants.LOG.info("Better Compatibility Checker starting");
         config = Config.load();
         if (config != null) {
             Constants.LOG.info("Config file loaded");
