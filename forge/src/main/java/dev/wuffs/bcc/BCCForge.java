@@ -26,15 +26,14 @@ public class BCCForge {
         // project.
     
         // Use Forge to bootstrap the Common mod.
-        Constants.LOG.info("Better Compatibility Checker forge loading");
-        CommonClass.init();
+        Constants.LOG.info("Better Compatibility Checker starting");
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, Config.CONFIG);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::doCommonSetup);
         ModLoadingContext.get().registerExtensionPoint(IExtensionPoint.DisplayTest.class, () -> new IExtensionPoint.DisplayTest(() -> NetworkConstants.IGNORESERVERONLY, (a, b) -> true));
     }
 
     private void doCommonSetup(final FMLCommonSetupEvent event) {
-        Constants.LOG.info("Better Compatibility Checker forge setting up");
+        Constants.LOG.info("Better Compatibility Checker setup");
         if(Config.useMetadata.get()) {
             Path metaFile = FMLPaths.CONFIGDIR.get().resolve("metadata.json");
             if(!Files.exists(metaFile)) {
