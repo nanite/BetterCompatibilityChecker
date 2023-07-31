@@ -1,19 +1,26 @@
 plugins {
     id 'idea'
     id 'java'
-    id 'org.spongepowered.gradle.vanilla'
+    id 'fabric-loom'
 }
 
-minecraft {
-    version(minecraft_version)
-    if(file("src/main/resources/${mod_id}.accesswidener").exists()){
-        accessWideners(file("src/main/resources/${mod_id}.accesswidener"))
-    }
-}
+//minecraft {
+//    version(minecraft_version)
+//    if(file("src/main/resources/${mod_id}.accesswidener").exists()){
+//        accessWideners(file("src/main/resources/${mod_id}.accesswidener"))
+//    }
+//}
 
 dependencies {
-     compileOnly group:'org.spongepowered', name:'mixin', version:'0.8.5'
-     implementation group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.1'
+    minecraft "com.mojang:minecraft:${minecraft_version}"
+    mappings loom.officialMojangMappings()
+    compileOnly group: 'org.spongepowered', name: 'mixin', version: '0.8.5'
+}
+
+loom {
+    if (project(":common").file("src/main/resources/${mod_id}.accesswidener").exists()) {
+        accessWidenerPath.set(project(":common").file("src/main/resources/${mod_id}.accesswidener"))
+    }
 }
 
 publishing {

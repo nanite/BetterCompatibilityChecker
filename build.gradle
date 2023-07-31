@@ -97,7 +97,7 @@ subprojects {
 }
 
 publishMods {
-    dryRun = providers.environmentVariable("CURSE_TOKEN").orElse(null).map { it == null }
+    dryRun = providers.environmentVariable("CURSE_TOKEN").getOrNull() == null
     changelog = file("./CHANGELOG.md").text
     type = STABLE
 
@@ -134,8 +134,10 @@ publishMods {
 //        }
 
         github {
+            file = project.provider { project(":forge").tasks.jar }.flatMap { it.archiveFile }
+            additionalFiles.from project.provider { project(":fabric").tasks.remapJar }.flatMap { it.archiveFile }
             repository = "${github_repo}"
             accessToken = providers.environmentVariable("GITHUB_TOKEN")
-            commitish = providers.environmentVariable("GITHUB_REF_NAME")
+            commitish = providers.environmentVariable("GITHUB_REF_NAME").orElse("dryRun")
         }
 }
