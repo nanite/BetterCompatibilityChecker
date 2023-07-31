@@ -19,11 +19,10 @@ subprojects {
         archivesName = "${mod_name}-${project.name}"
     }
 
-    version = "${mod_version}${isSnapshot ? '-SNAPSHOT' : ''}+mc${minecraft_version}"
+    version = "${mod_version}+mc${minecraft_version}${isSnapshot ? '-SNAPSHOT' : ''}"
 
     java.toolchain.languageVersion = JavaLanguageVersion.of(17)
     java.withSourcesJar()
-    java.withJavadocJar()
 
     jar {
         from(rootProject.file("LICENSE")) {
