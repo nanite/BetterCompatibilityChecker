@@ -96,6 +96,7 @@ publishMods {
         projectId = "${curseforge_id}"
         accessToken = providers.environmentVariable("CURSE_TOKEN")
         minecraftVersions.add("${minecraft_version}")
+        displayName = "${mod_name}-${project.name} ${mod_version}+mc${minecraft_version}"
     }
     curseforge("curseforgeForge") {
         from options
