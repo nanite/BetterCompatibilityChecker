@@ -1,6 +1,7 @@
 package dev.wuffs.bcc;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import net.fabricmc.loader.api.FabricLoader;
 
 import java.io.IOException;
@@ -14,7 +15,7 @@ public class Config {
     public static boolean create(){
         Constants.LOG.warn("Config file not found, creating default config");
         try {
-            Files.write(configFile, new Gson().toJson(new ModConfig()).getBytes(), StandardOpenOption.CREATE);
+            Files.write(configFile, new GsonBuilder().setPrettyPrinting().create().toJson(new ModConfig()).getBytes(), StandardOpenOption.CREATE);
             return true;
         } catch (IOException e) {
             Constants.LOG.error("Failed to create config file", e);
