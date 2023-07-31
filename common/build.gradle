@@ -17,6 +17,13 @@ dependencies {
     compileOnly group: 'org.spongepowered', name: 'mixin', version: '0.8.5'
 }
 
+repositories {
+    maven {
+        name = 'Creeperhost'
+        url = 'https://maven.creeperhost.net/'
+    }
+}
+
 loom {
     if (project(":common").file("src/main/resources/${mod_id}.accesswidener").exists()) {
         accessWidenerPath.set(project(":common").file("src/main/resources/${mod_id}.accesswidener"))
