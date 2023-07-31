@@ -97,25 +97,25 @@ publishMods {
         accessToken = providers.environmentVariable("CURSE_TOKEN")
         minecraftVersions.add("${minecraft_version}")
     }
-//    curseforge("curseforgeForge") {
-//        from options
-//        file = project.provider { project(":forge").tasks.jar }.flatMap { it.archiveFile }
-//        modLoaders.add("forge")
-//        modLoaders.add("Java 17")
-//    }
-//
-//    curseforge("curseforgeFabric") {
-//        from options
-//
-//        file = project.provider { project(":fabric").tasks.remapJar }.flatMap { it.archiveFile }
-//        modLoaders.add("fabric")
-//        modLoaders.add("Java 17")
-//
-//        requires {
-//            slug = "fabric-api"
-//        }
-//
-//    }
+    curseforge("curseforgeForge") {
+        from options
+        file = project.provider { project(":forge").tasks.jar }.flatMap { it.archiveFile }
+        modLoaders.add("forge")
+        modLoaders.add("Java 17")
+    }
+
+    curseforge("curseforgeFabric") {
+        from options
+
+        file = project.provider { project(":fabric").tasks.remapJar }.flatMap { it.archiveFile }
+        modLoaders.add("fabric")
+        modLoaders.add("Java 17")
+
+        requires {
+            slug = "fabric-api"
+        }
+
+    }
 
 //    Todo: WILL ADD MODRINTH ONCE THEY FIX THEIR OVERREACHING TOS
 //        modrinth {
