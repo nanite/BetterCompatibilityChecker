@@ -20,12 +20,6 @@ import java.nio.file.Path;
 public class BCCForge {
     
     public BCCForge() {
-    
-        // This method is invoked by the Forge mod loader when it is ready
-        // to load your mod. You can access Forge and Common code in this
-        // project.
-    
-        // Use Forge to bootstrap the Common mod.
         Constants.LOG.info("Better Compatibility Checker starting");
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, Config.CONFIG);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::doCommonSetup);
