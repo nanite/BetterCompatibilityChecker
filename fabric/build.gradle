@@ -1,7 +1,6 @@
 plugins {
     id 'java'
     id 'idea'
-    id 'maven-publish'
     id 'fabric-loom'
 }
 
@@ -62,17 +61,6 @@ publishing {
         mavenJava(MavenPublication) {
             artifactId base.archivesName.get()
             from components.java
-        }
-    }
-    repositories {
-        if (providers.environmentVariable("NANITE_TOKEN").orNull) {
-            maven {
-                url "https://maven.nanite.dev/${isSnapshot ? 'snapshots' : 'releases'}"
-                credentials {
-                    username = "nanite"
-                    password = providers.environmentVariable("NANITE_TOKEN").get()
-                }
-            }
         }
     }
 }

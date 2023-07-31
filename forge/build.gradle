@@ -1,6 +1,5 @@
 plugins {
     id 'idea'
-    id 'maven-publish'
     id 'net.minecraftforge.gradle'
     id 'org.spongepowered.mixin'
 }
@@ -107,17 +106,6 @@ publishing {
             artifactId base.archivesName.get()
             from components.java
             fg.component(it)
-        }
-    }
-    repositories {
-        if (providers.environmentVariable("NANITE_TOKEN").orNull) {
-            maven {
-                url "https://maven.nanite.dev/${isSnapshot ? 'snapshots' : 'releases'}"
-                credentials {
-                    username = "nanite"
-                    password = providers.environmentVariable("NANITE_TOKEN").get()
-                }
-            }
         }
     }
 }

@@ -3,7 +3,7 @@ plugins {
     id 'net.minecraftforge.gradle' version '[6.0,6.2)' apply(false)
     id 'org.spongepowered.gradle.vanilla' version '0.2.1-SNAPSHOT' apply(false)
     id "org.spongepowered.mixin" version "${mixin_version}" apply(false)
-    id "me.modmuss50.mod-publish-plugin" version "0.2.0"
+    id "me.modmuss50.mod-publish-plugin" version "0.2.1"
 }
 
 ext.isSnapshot = providers.environmentVariable("SNAPSHOT").map {it == "true"}.getOrElse(false)
@@ -14,6 +14,7 @@ allprojects {
 
 subprojects {
     apply plugin: 'java'
+    apply plugin: 'maven-publish'
 
     base {
         archivesName = "${mod_name}-${project.name}"
@@ -79,6 +80,20 @@ subprojects {
 
         enabled = false
     }
+
+    publishing {
+        repositories {
+            if (providers.environmentVariable("NANITE_TOKEN").orNull) {
+                maven {
+                    url "${nanite_maven_url}${isSnapshot ? 'snapshots' : 'releases'}"
+                    credentials {
+                        username = "nanite"
+                        password = providers.environmentVariable("NANITE_TOKEN").get()
+                    }
+                }
+            }
+        }
+    }
 }
 
 publishMods {
@@ -91,24 +106,25 @@ publishMods {
         accessToken = providers.environmentVariable("CURSE_TOKEN")
         minecraftVersions.add("${minecraft_version}")
     }
-    curseforge("curseforgeForge") {
-        from options
-        file = project.provider { project(":forge").tasks.jar }.flatMap { it.archiveFile }
-        modLoaders.add("forge")
-        modLoaders.add("Java 17")
-    }
-
-    curseforge("curseforgeFabric") {
-        from options
-
-        file = project.provider { project(":fabric").tasks.remapJar }.flatMap { it.archiveFile }
-        modLoaders.add("fabric")
-
-        requires {
-            slug = "fabric-api"
-        }
-
-    }
+//    curseforge("curseforgeForge") {
+//        from options
+//        file = project.provider { project(":forge").tasks.jar }.flatMap { it.archiveFile }
+//        modLoaders.add("forge")
+//        modLoaders.add("Java 17")
+//    }
+//
+//    curseforge("curseforgeFabric") {
+//        from options
+//
+//        file = project.provider { project(":fabric").tasks.remapJar }.flatMap { it.archiveFile }
+//        modLoaders.add("fabric")
+//        modLoaders.add("Java 17")
+//
+//        requires {
+//            slug = "fabric-api"
+//        }
+//
+//    }
 
 //    Todo: WILL ADD MODRINTH ONCE THEY FIX THEIR OVERREACHING TOS
 //        modrinth {
@@ -117,9 +133,9 @@ publishMods {
 //            minecraftVersions.add("1.20.1")
 //        }
 
-//        github {
-//            repository = "test/example"
-//            accessToken = providers.environmentVariable("GITHUB_TOKEN")
-//            commitish = "main"
-//        }
+        github {
+            repository = "${github_repo}"
+            accessToken = providers.environmentVariable("GITHUB_TOKEN")
+            commitish = providers.environmentVariable("GITHUB_REF_NAME")
+        }
 }
