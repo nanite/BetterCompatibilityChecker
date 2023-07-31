@@ -1,4 +1,4 @@
-package com.example.examplemod.platform;
+package dev.wuffs.bcc.platform;
 
 import dev.wuffs.bcc.platform.services.IPlatformHelper;
 import net.minecraftforge.fml.ModList;
