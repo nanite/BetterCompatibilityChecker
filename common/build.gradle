@@ -5,12 +5,6 @@ plugins {
     id 'org.spongepowered.gradle.vanilla'
 }
 
-def ENV = System.getenv()
-def isSnapshot = ENV.SNAPSHOT == "true"
-
-base {
-    archivesName = "${mod_name}-common-${mod_version}-build.${ENV.GITHUB_RUN_NUMBER ?: 9999}+mc${minecraft_version}${isSnapshot ? '-SNAPSHOT' : ''}"
-}
 minecraft {
     version(minecraft_version)
     if(file("src/main/resources/${mod_id}.accesswidener").exists()){
@@ -31,8 +25,14 @@ publishing {
         }
     }
     repositories {
-        maven {
-            url "file://" + System.getenv("local_maven")
+        if (ENV.NANITE_TOKEN) {
+            maven {
+                url "https://maven.nanite.dev/${isSnapshot ? 'snapshots' : 'releases'}"
+                credentials {
+                    username = "nanite"
+                    password = "${ENV.NANITE_TOKEN}"
+                }
+            }
         }
     }
 }

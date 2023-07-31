@@ -3,31 +3,44 @@ plugins {
     id 'net.minecraftforge.gradle' version '[6.0,6.2)' apply(false)
     id 'org.spongepowered.gradle.vanilla' version '0.2.1-SNAPSHOT' apply(false)
     id("org.spongepowered.mixin") version "${mixin_version}" apply(false)
+    id "me.modmuss50.mod-publish-plugin" version "0.2.0"
 }
 
 subprojects {
     apply plugin: 'java'
 
+    def ENV = System.getenv()
+    def isSnapshot = ENV.SNAPSHOT == "true"
+
+    ext.ENV = ENV
+    ext.isSnapshot = isSnapshot
+
+    base {
+        archivesName = "${mod_name}-${project.name}"
+    }
+
+    version = "${mod_version}${isSnapshot ? '-SNAPSHOT' : ''}+mc${minecraft_version}"
+
     java.toolchain.languageVersion = JavaLanguageVersion.of(17)
     java.withSourcesJar()
     java.withJavadocJar()
-        
+
     jar {
         from(rootProject.file("LICENSE")) {
             rename { "${it}_${mod_name}" }
         }
         manifest {
             attributes([
-                'Specification-Title'     : mod_name,
-                'Specification-Vendor'    : mod_author,
-                'Specification-Version'   : project.jar.archiveVersion,
-                'Implementation-Title'    : project.name,
-                'Implementation-Version'  : project.jar.archiveVersion,
-                'Implementation-Vendor'   : mod_author,
-                'Implementation-Timestamp': new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
-                'Timestamp'               : System.currentTimeMillis(),
-                'Built-On-Java'           : "${System.getProperty('java.vm.version')} (${System.getProperty('java.vm.vendor')})",
-                'Built-On-Minecraft'      : minecraft_version
+                    'Specification-Title'     : mod_name,
+                    'Specification-Vendor'    : mod_author,
+                    'Specification-Version'   : project.jar.archiveVersion,
+                    'Implementation-Title'    : project.name,
+                    'Implementation-Version'  : project.jar.archiveVersion,
+                    'Implementation-Vendor'   : mod_author,
+                    'Implementation-Timestamp': new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
+                    'Timestamp'               : System.currentTimeMillis(),
+                    'Built-On-Java'           : "${System.getProperty('java.vm.version')} (${System.getProperty('java.vm.vendor')})",
+                    'Built-On-Minecraft'      : minecraft_version
             ])
         }
     }
@@ -51,7 +64,7 @@ subprojects {
     }
 
     tasks.withType(JavaCompile).configureEach {
-    
+
         it.options.encoding = 'UTF-8'
         it.options.getRelease().set(17)
     }
@@ -69,4 +82,44 @@ subprojects {
 
         enabled = false
     }
+}
+
+publishMods {
+    changelog = file("./CHANGELOG.md").text
+    type = STABLE
+
+
+    def options = curseforgeOptions {
+        projectId = "${curseforge_id}"
+        accessToken = providers.environmentVariable("CURSE_TOKEN")
+        minecraftVersions.add("${minecraft_version}")
+    }
+    curseforge("curseforgeForge") {
+        from options
+        file = project.provider { project(":forge").tasks.jar }.flatMap { it.archiveFile }
+        modLoaders.add("forge")
+        modLoaders.add("Java 17")
+    }
+
+    curseforge("curseforgeFabric") {
+        from options
+
+        file = project.provider { project(":fabric").tasks.remapJar }.flatMap { it.archiveFile }
+        modLoaders.add("fabric")
+
+        requires {
+            slug = "fabric-api"
+        }
+
+    }
+//        modrinth {
+//            projectId = "abcdef"
+//            accessToken = providers.environmentVariable("MODRINTH_TOKEN")
+//            minecraftVersions.add("1.20.1")
+//        }
+//        github {
+//            repository = "test/example"
+//            accessToken = providers.environmentVariable("GITHUB_TOKEN")
+//            commitish = "main"
+//        }
 }

@@ -5,12 +5,12 @@ plugins {
     id 'fabric-loom'
 }
 
-def ENV = System.getenv()
-def isSnapshot = ENV.SNAPSHOT == "true"
+//def ENV = System.getenv()
+//def isSnapshot = ENV.SNAPSHOT == "true"
 
-base {
-    archivesName = "${mod_name}-fabric-${mod_version}-build.${ENV.GITHUB_RUN_NUMBER ?: 9999}+mc${minecraft_version}${isSnapshot ? '-SNAPSHOT' : ''}"
-}
+//base {
+//    archivesName = "${mod_name}-fabric-${mod_version}-build.${ENV.GITHUB_RUN_NUMBER ?: 9999}+mc${minecraft_version}${isSnapshot ? '-SNAPSHOT' : ''}"
+//}
 dependencies {
     minecraft "com.mojang:minecraft:${minecraft_version}"
     mappings loom.officialMojangMappings()
@@ -65,12 +65,9 @@ publishing {
         }
     }
     repositories {
-        maven {
-            url "file://" + System.getenv("local_maven")
-        }
-        if (ENV.NANITE_DEPLOY) {
+        if (ENV.NANITE_TOKEN) {
             maven {
-                url "https://maven.nanite.dev/"
+                url "https://maven.nanite.dev/${isSnapshot ? 'snapshots' : 'releases'}"
                 credentials {
                     username = "nanite"
                     password = "${ENV.NANITE_TOKEN}"
