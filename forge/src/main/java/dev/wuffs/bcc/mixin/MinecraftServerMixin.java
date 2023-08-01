@@ -13,7 +13,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(MinecraftServer.class)
-public class MinecraftServerMixinn {
+public class MinecraftServerMixin {
     @Inject(method = "getStatusJson", at = @At("RETURN"), cancellable = true, remap = false)
     public void modifyStatusJson(CallbackInfoReturnable<String> cir) {
         JsonElement jsonElement = JsonParser.parseString(cir.getReturnValue());

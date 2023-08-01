@@ -12,7 +12,6 @@
         "ServerDataMixin"
     ],
     "server": [
-        "MinecraftServerMixinn"
     ],
     "injectors": {
         "defaultRequire": 1

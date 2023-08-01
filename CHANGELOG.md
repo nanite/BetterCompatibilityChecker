@@ -2,6 +2,9 @@
 
 All notable changes to this project will be documented in this file.
 
+## [4.0.1]
+- Fix fabric server not being able to start up
+
 ## [4.0.0]
 
 - Moved over to MultiLoader
