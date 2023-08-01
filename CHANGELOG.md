@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [4.0.2]
+
+- Fixed CI not adding loader name to the display name on curseforge
+- Added Turkish translation (alpeerkaraca)
+- Re-added French translation as it went missing (Calvineries)
+- Lang between fabric and forge are now in sync
+
 ## [4.0.1]
 - Fix fabric server not being able to start up
 
