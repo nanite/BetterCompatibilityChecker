@@ -96,10 +96,10 @@ publishMods {
         projectId = "${curseforge_id}"
         accessToken = providers.environmentVariable("CURSE_TOKEN")
         minecraftVersions.add("${minecraft_version}")
-//        displayName = "${mod_name}-${project.name} ${mod_version}+mc${minecraft_version}"
     }
     curseforge("curseforgeForge") {
         from options
+        displayName = "${project.name} Forge ${mod_version}+mc${minecraft_version}"
         file = project.provider { project(":forge").tasks.jar }.flatMap { it.archiveFile }
         modLoaders.add("forge")
         modLoaders.add("Java 17")
@@ -107,7 +107,7 @@ publishMods {
 
     curseforge("curseforgeFabric") {
         from options
-
+        displayName = "${project.name} Fabric ${mod_version}+mc${minecraft_version}"
         file = project.provider { project(":fabric").tasks.remapJar }.flatMap { it.archiveFile }
         modLoaders.add("fabric")
         modLoaders.add("Java 17")
