@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## [4.0.4]
+
+- Fixed version data not being replaced in mods.toml
+
+## [4.0.3]
+
+- Fixed various build script issues
+
 ## [4.0.2]
 
 - Fixed CI not adding loader name to the display name on curseforge

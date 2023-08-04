@@ -1,11 +1,11 @@
 modLoader="javafml" #mandatory
-loaderVersion="[46,)" #mandatory This is typically bumped every Minecraft version by Forge. See our download page for lists of versions.
+loaderVersion="[47,)" #mandatory This is typically bumped every Minecraft version by Forge. See our download page for lists of versions.
 license="All rights reserved"
 [[mods]] #mandatory
-modId="bcc" #mandatory
-version="${file.jarVersion}" #mandatory
+modId="${mod_id}" #mandatory
+version="${mod_version}" #mandatory
 displayName="Better Compatibility Checker" #mandatory
-authors="Gaz" #optional
+authors="${mod_author}" #optional
 description='''
 A better compatibility checker for Minecraft.
 '''
