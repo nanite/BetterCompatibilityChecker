@@ -4,12 +4,6 @@ plugins {
     id 'fabric-loom'
 }
 
-//def ENV = System.getenv()
-//def isSnapshot = ENV.SNAPSHOT == "true"
-
-//base {
-//    archivesName = "${mod_name}-fabric-${mod_version}-build.${ENV.GITHUB_RUN_NUMBER ?: 9999}+mc${minecraft_version}${isSnapshot ? '-SNAPSHOT' : ''}"
-//}
 dependencies {
     minecraft "com.mojang:minecraft:${minecraft_version}"
     mappings loom.officialMojangMappings()

@@ -3,16 +3,7 @@ plugins {
     id 'net.minecraftforge.gradle'
     id 'org.spongepowered.mixin'
 }
-apply {
-    from 'https://files.saps.dev/ci/git-md-changelog.gradle'
-}
 
-//def ENV = System.getenv()
-//def isSnapshot = ENV.SNAPSHOT == "true"
-
-//base {
-//    archivesName = "${mod_name}-forge-${mod_version}-build.${ENV.GITHUB_RUN_NUMBER ?: 9999}+mc${minecraft_version}${isSnapshot ? '-SNAPSHOT' : ''}"
-//}
 mixin {
     add(sourceSets.main, "${mod_id}.refmap.json")
 
