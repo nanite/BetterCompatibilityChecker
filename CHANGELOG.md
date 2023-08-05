@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 ## [4.0.4]
 
+- Ported for neoforge
+
+## [4.0.4]
+
 - Fixed version data not being replaced in mods.toml
 
 ## [4.0.3]
