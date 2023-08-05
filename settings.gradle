@@ -2,6 +2,10 @@ pluginManagement {
     repositories {
         gradlePluginPortal()
         maven {
+            name = 'Wuffs'
+            url = 'https://maven.wuffs.wtf/releases'
+        }
+        maven {
             name = 'Creeperhost'
             url = 'https://maven.creeperhost.net/'
         }
@@ -29,3 +33,4 @@ rootProject.name = 'BetterCompatibilityChecker'
 include("common")
 include("fabric")
 include("forge")
+include("neo")
