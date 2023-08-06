@@ -22,10 +22,23 @@ public class ServerStatusPingerMixin {
         try {
             Class<?> pinger = Class.forName("net.minecraft.client.multiplayer.ServerStatusPinger$1");
 
-            SERVER_DATA_FIELD = pinger.getDeclaredField("val$pServer");
-            SERVER_DATA_FIELD.setAccessible(true);
-        } catch (Exception ex) {
+            SERVER_DATA_FIELD = getPingerField(pinger, "val$pServer");
+            if(SERVER_DATA_FIELD == null){
+                SERVER_DATA_FIELD = getPingerField(pinger, "val$p_105460_");
+            }
+            if(SERVER_DATA_FIELD != null) {
+                SERVER_DATA_FIELD.setAccessible(true);
+            }
+        } catch(ClassNotFoundException ex){
             Constants.LOG.error("[Better Compat Pinger Mixin]: " + ex.getMessage());
+        }
+    }
+
+    private static Field getPingerField(Class<?> pingerClazz, String fieldName){
+        try {
+            return pingerClazz.getDeclaredField(fieldName);
+        } catch(NoSuchFieldException ex){
+            return null;
         }
     }
 
