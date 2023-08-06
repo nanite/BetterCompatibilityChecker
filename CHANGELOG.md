@@ -2,7 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
-## [4.0.4]
+## [4.0.6]
+
+- Fix neoforge crashing on MP screen
+  - Why are is val$p_105460_ different of neo(val$pServer)?
+
+## [4.0.5]
 
 - Ported for neoforge
 
