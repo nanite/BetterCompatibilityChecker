@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## [4.0.7]
+
+- Forge <-> Neo compatability changes
+  - Should be compatible with each other now (thanks mapping differences)
+
 ## [4.0.6]
 
 - Fix neoforge crashing on MP screen
