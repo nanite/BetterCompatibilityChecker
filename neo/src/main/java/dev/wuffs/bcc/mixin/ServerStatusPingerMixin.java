@@ -1,5 +1,6 @@
 package dev.wuffs.bcc.mixin;
 
+import dev.wuffs.bcc.Constants;
 import dev.wuffs.bcc.contract.ServerDataExtension;
 import dev.wuffs.bcc.data.BetterStatus;
 import net.minecraft.client.Minecraft;
@@ -13,7 +14,7 @@ import java.lang.reflect.Field;
 
 @Mixin(targets = "net/minecraft/client/multiplayer/ServerStatusPinger$1")
 public class ServerStatusPingerMixin {
-    private static final Field SERVER_DATA_FIELD;
+    private static Field SERVER_DATA_FIELD;
 
     // Credit to https://github.com/Aizistral-Studios/No-Chat-Reports/blob/1.20-Unified/forge/src/main/java/com/aizistral/nochatreports/forge/mixins/client/MixinServerStatusPinger%241.java
     static {
@@ -21,16 +22,10 @@ public class ServerStatusPingerMixin {
         try {
             Class<?> pinger = Class.forName("net.minecraft.client.multiplayer.ServerStatusPinger$1");
 
-            SERVER_DATA_FIELD = pinger.getDeclaredField("val$p_105460_");
+            SERVER_DATA_FIELD = pinger.getDeclaredField("val$pServer");
             SERVER_DATA_FIELD.setAccessible(true);
         } catch (Exception ex) {
-            Error error = new Error("Reflection failed in MixinServerStatusPinger$1!", ex);
-
-            Minecraft.getInstance().execute(() -> {
-                throw error;
-            });
-
-            throw error;
+            Constants.LOG.error("[Better Compat Pinger Mixin]: " + ex.getMessage());
         }
     }
 
