@@ -1,7 +1,7 @@
 plugins {
     id 'idea'
     id 'net.neoforged.gradle'
-    id 'org.spongepowered.mixin'
+    id "org.spongepowered.mixin" version "${mixin_version}"
 }
 
 mixin {

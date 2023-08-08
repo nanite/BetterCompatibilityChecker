@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+## [4.0.8]
+
+- Switched to using fabric mixin AP
+
 ## [4.0.7]
 
 - Forge <-> Neo compatability changes
