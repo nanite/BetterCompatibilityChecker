@@ -9,7 +9,8 @@
         "ClientboundStatusResponsePacketMixin"
     ],
     "client": [
-        "ServerDataMixin"
+        "ServerDataMixin",
+        "ServerStatusPingerMixin"
     ],
     "server": [
     ],

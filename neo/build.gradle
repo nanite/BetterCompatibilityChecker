@@ -68,10 +68,23 @@ minecraft {
 
 sourceSets.main.resources { srcDir 'src/generated/resources' }
 
+repositories {
+    maven {
+        url = 'https://maven.fabricmc.net'
+        content {
+            includeGroup "net.fabricmc"
+        }
+    }
+}
+
+configurations {
+    annotationProcessor.exclude group: "org.spongepowered", module: "mixin"
+}
+
 dependencies {
     minecraft "net.neoforged:forge:${minecraft_version}-${neo_version}"
     compileOnly project(":common")
-    annotationProcessor("org.spongepowered:mixin:0.8.5:processor")
+    annotationProcessor("net.fabricmc:sponge-mixin:0.12.5+mixin.0.8.5")
 }
 
 tasks.withType(JavaCompile).configureEach {

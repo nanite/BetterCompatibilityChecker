@@ -13,6 +13,12 @@ mixin {
 
 repositories {
     maven {
+        url = 'https://maven.fabricmc.net'
+        content {
+            includeGroup "net.fabricmc"
+        }
+    }
+    maven {
         url = "https://maven.minecraftforge.net"
     }
 }
@@ -75,10 +81,14 @@ minecraft {
 
 sourceSets.main.resources.srcDir 'src/generated/resources'
 
+configurations {
+    annotationProcessor.exclude group: "org.spongepowered", module: "mixin"
+}
+
 dependencies {
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
     compileOnly project(":common")
-    annotationProcessor("org.spongepowered:mixin:0.8.5:processor")
+    annotationProcessor("net.fabricmc:sponge-mixin:0.12.5+mixin.0.8.5")
 }
 
 tasks.withType(JavaCompile).configureEach {
