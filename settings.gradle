@@ -33,4 +33,4 @@ rootProject.name = 'BetterCompatibilityChecker'
 include("common")
 include("fabric")
 include("forge")
-include("neo")
+include("neoforge")

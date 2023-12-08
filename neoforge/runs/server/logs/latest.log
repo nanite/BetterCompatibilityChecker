@@ -1,0 +1,106 @@
+[08Dec2023 14:53:25.731] [main/INFO] [cpw.mods.modlauncher.Launcher/MODLAUNCHER]: ModLauncher running: args [--nogui, --launchTarget, forgeserveruserdev, --gameDir, ., --fml.neoForgeVersion, 20.4.3-beta, --fml.fmlVersion, 1.0.16, --fml.mcVersion, 1.20.4, --fml.neoFormVersion, 20231207.154220, --fml.mixin, bcc.mixins.json, --fml.mixin, bcc.neo.mixins.json]
+[08Dec2023 14:53:25.741] [main/INFO] [cpw.mods.modlauncher.Launcher/MODLAUNCHER]: ModLauncher 10.0.9+10.0.9+main.dcd20f30 starting: java version 17.0.7 by Eclipse Adoptium; OS Windows 11 arch amd64 version 10.0
+[08Dec2023 14:53:25.951] [main/INFO] [net.neoforged.fml.loading.ImmediateWindowHandler/]: ImmediateWindowProvider not loading because launch target is forgeserveruserdev
+[08Dec2023 14:53:25.997] [main/INFO] [mixin/]: SpongePowered MIXIN Subsystem Version=0.8.5 Source=union:/C:/Users/Gareth/.gradle/caches/modules-2/files-2.1/org.spongepowered/mixin/0.8.5/9d1c0c3a304ae6697ecd477218fa61b850bf57fc/mixin-0.8.5.jar%23108!/ Service=ModLauncher Env=SERVER
+[08Dec2023 14:53:26.251] [main/WARN] [net.neoforged.fml.loading.moddiscovery.ModFileParser/LOADING]: Mod file C:\Users\Gareth\.gradle\caches\modules-2\files-2.1\net.neoforged.fancymodloader\core\1.0.16\6bab0913ca1635a8e272ef89c17befb52115a3c2\core-1.0.16.jar is missing mods.toml file
+[08Dec2023 14:53:26.253] [main/WARN] [net.neoforged.fml.loading.moddiscovery.ModFileParser/LOADING]: Mod file C:\Users\Gareth\.gradle\caches\modules-2\files-2.1\net.neoforged.fancymodloader\language-minecraft\1.0.16\c1f7785ff7fc0b18aa6d2d4056dcff4fee1b32be\language-minecraft-1.0.16.jar is missing mods.toml file
+[08Dec2023 14:53:26.256] [main/WARN] [net.neoforged.fml.loading.moddiscovery.ModFileParser/LOADING]: Mod file C:\Users\Gareth\.gradle\caches\modules-2\files-2.1\net.neoforged.fancymodloader\language-java\1.0.16\2ddedcd8a488fd73e3e92a59949845e9c3a7d9f2\language-java-1.0.16.jar is missing mods.toml file
+[08Dec2023 14:53:26.258] [main/WARN] [net.neoforged.fml.loading.moddiscovery.ModFileParser/LOADING]: Mod file C:\Users\Gareth\.gradle\caches\modules-2\files-2.1\net.neoforged.fancymodloader\language-lowcode\1.0.16\e627c78870d4286826c4b14c0137319ff03b4e0\language-lowcode-1.0.16.jar is missing mods.toml file
+[08Dec2023 14:53:26.269] [main/INFO] [net.neoforged.fml.loading.moddiscovery.ModDiscoverer/SCAN]: Found mod file "core-1.0.16.jar" of type LIBRARY with provider net.neoforged.fml.loading.moddiscovery.MinecraftLocator@6e0ff644
+[08Dec2023 14:53:26.269] [main/INFO] [net.neoforged.fml.loading.moddiscovery.ModDiscoverer/SCAN]: Found mod file "language-minecraft-1.0.16.jar" of type LANGPROVIDER with provider net.neoforged.fml.loading.moddiscovery.MinecraftLocator@6e0ff644
+[08Dec2023 14:53:26.269] [main/INFO] [net.neoforged.fml.loading.moddiscovery.ModDiscoverer/SCAN]: Found mod file "language-java-1.0.16.jar" of type LANGPROVIDER with provider net.neoforged.fml.loading.moddiscovery.MinecraftLocator@6e0ff644
+[08Dec2023 14:53:26.269] [main/INFO] [net.neoforged.fml.loading.moddiscovery.ModDiscoverer/SCAN]: Found mod file "language-lowcode-1.0.16.jar" of type LANGPROVIDER with provider net.neoforged.fml.loading.moddiscovery.MinecraftLocator@6e0ff644
+[08Dec2023 14:53:26.270] [main/INFO] [net.neoforged.fml.loading.moddiscovery.ModDiscoverer/SCAN]: Found mod file "neoforge-20.4.3-beta.jar" of type MOD with provider net.neoforged.fml.loading.moddiscovery.MinecraftLocator@6e0ff644
+[08Dec2023 14:53:26.270] [main/INFO] [net.neoforged.fml.loading.moddiscovery.ModDiscoverer/SCAN]: Found mod file "main" of type MOD with provider net.neoforged.fml.loading.moddiscovery.MinecraftLocator@6e0ff644
+[08Dec2023 14:53:26.270] [main/INFO] [net.neoforged.fml.loading.moddiscovery.ModDiscoverer/SCAN]: Found mod file "" of type MOD with provider net.neoforged.fml.loading.moddiscovery.MinecraftLocator@6e0ff644
+[08Dec2023 14:53:26.296] [main/INFO] [net.neoforged.fml.loading.moddiscovery.ModDiscoverer/SCAN]: Found mod file "events-1.0.16.jar" of type GAMELIBRARY with provider net.neoforged.fml.loading.moddiscovery.BuiltinGameLibraryLocator@3f3ddbd9
+[08Dec2023 14:53:26.401] [main/INFO] [net.neoforged.fml.loading.moddiscovery.JarInJarDependencyLocator/]: Found 1 dependencies adding them to mods collection
+[08Dec2023 14:53:26.401] [main/INFO] [net.neoforged.fml.loading.moddiscovery.ModDiscoverer/SCAN]: Found mod file "mixinextras-neoforge-0.3.1.jar" of type GAMELIBRARY with provider net.neoforged.fml.loading.moddiscovery.JarInJarDependencyLocator@7d2a6eac
+[08Dec2023 14:53:27.789] [main/INFO] [mixin/]: Compatibility level set to JAVA_17
+[08Dec2023 14:53:27.792] [main/INFO] [cpw.mods.modlauncher.LaunchServiceHandler/MODLAUNCHER]: Launching target 'forgeserveruserdev' with arguments [--gameDir, ., --nogui]
+[08Dec2023 14:53:27.928] [main/WARN] [mixin/]: Reference map 'bcc.refmap.json' for bcc.mixins.json could not be read. If this is a development environment you can ignore this message
+[08Dec2023 14:53:27.929] [main/WARN] [mixin/]: Reference map 'bcc.refmap.json' for bcc.neo.mixins.json could not be read. If this is a development environment you can ignore this message
+[08Dec2023 14:53:29.168] [main/WARN] [oshi.driver.windows.perfmon.PerfmonDisabled/]: Invalid registry value type detected for PerfOS counters. Should be REG_DWORD. Ignoring: HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\PerfOS\Performance\Disable Performance Counters.
+[08Dec2023 14:53:34.532] [modloading-worker-0/INFO] [Better Compatibility Checker/]: Better Compatibility Checker starting
+[08Dec2023 14:53:34.533] [modloading-worker-0/INFO] [net.neoforged.neoforge.common.NeoForgeMod/NEOFORGE-MOD]: NeoForge mod loading, version 20.4.3-beta, for MC 1.20.4 with MCP 20231207.154220
+[08Dec2023 14:53:34.966] [main/WARN] [net.neoforged.neoforge.common.ModConfigSpec/CORE]: Configuration file N:\Projects\Minecraft\ML-1.20\BetterCompatibilityChecker\neoforge\runs\server\config\bcc-common.toml is not correct. Correcting
+[08Dec2023 14:53:34.969] [main/WARN] [net.neoforged.neoforge.common.ModConfigSpec/CORE]: Incorrect key general was corrected from null to its default, SimpleCommentedConfig:{}. 
+[08Dec2023 14:53:34.969] [main/WARN] [net.neoforged.neoforge.common.ModConfigSpec/CORE]: Incorrect key general.modpackProjectID was corrected from null to its default, 0. 
+[08Dec2023 14:53:34.969] [main/WARN] [net.neoforged.neoforge.common.ModConfigSpec/CORE]: Incorrect key general.modpackName was corrected from null to its default, PLEASE_CHANGE_ME. 
+[08Dec2023 14:53:34.969] [main/WARN] [net.neoforged.neoforge.common.ModConfigSpec/CORE]: Incorrect key general.modpackVersion was corrected from null to its default, CHANGE_ME. 
+[08Dec2023 14:53:34.969] [main/WARN] [net.neoforged.neoforge.common.ModConfigSpec/CORE]: Incorrect key general.useMetadata was corrected from null to its default, false. 
+[08Dec2023 14:53:34.983] [modloading-worker-0/INFO] [Better Compatibility Checker/]: Better Compatibility Checker setup
+[08Dec2023 14:53:35.048] [main/ERROR] [net.minecraft.server.dedicated.Settings/]: Failed to load properties from file: server.properties
+java.nio.file.NoSuchFileException: server.properties
+	at sun.nio.fs.WindowsException.translateToIOException(WindowsException.java:85) ~[?:?]
+	at sun.nio.fs.WindowsException.rethrowAsIOException(WindowsException.java:103) ~[?:?]
+	at sun.nio.fs.WindowsException.rethrowAsIOException(WindowsException.java:108) ~[?:?]
+	at sun.nio.fs.WindowsFileSystemProvider.newByteChannel(WindowsFileSystemProvider.java:236) ~[?:?]
+	at java.nio.file.Files.newByteChannel(Files.java:380) ~[?:?]
+	at java.nio.file.Files.newByteChannel(Files.java:432) ~[?:?]
+	at java.nio.file.spi.FileSystemProvider.newInputStream(FileSystemProvider.java:422) ~[?:?]
+	at java.nio.file.Files.newInputStream(Files.java:160) ~[?:?]
+	at net.minecraft.server.dedicated.Settings.loadFromFile(Settings.java:38) ~[neoforge-20.4.3-beta.jar:?]
+	at net.minecraft.server.dedicated.DedicatedServerProperties.fromFile(DedicatedServerProperties.java:129) ~[neoforge-20.4.3-beta.jar:?]
+	at net.minecraft.server.dedicated.DedicatedServerSettings.<init>(DedicatedServerSettings.java:12) ~[neoforge-20.4.3-beta.jar:?]
+	at net.minecraft.server.Main.main(Main.java:123) ~[neoforge-20.4.3-beta.jar:?]
+	at jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[?:?]
+	at jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77) ~[?:?]
+	at jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[?:?]
+	at java.lang.reflect.Method.invoke(Method.java:568) ~[?:?]
+	at net.neoforged.fml.loading.targets.CommonLaunchHandler.runTarget(CommonLaunchHandler.java:126) ~[loader-1.0.16.jar:1.0]
+	at net.neoforged.fml.loading.targets.CommonLaunchHandler.serverService(CommonLaunchHandler.java:118) ~[loader-1.0.16.jar:1.0]
+	at net.neoforged.fml.loading.targets.ForgeServerUserdevLaunchHandler.runService(ForgeServerUserdevLaunchHandler.java:16) ~[loader-1.0.16.jar:1.0]
+	at net.neoforged.fml.loading.targets.CommonLaunchHandler.lambda$launchService$4(CommonLaunchHandler.java:108) ~[loader-1.0.16.jar:1.0]
+	at cpw.mods.modlauncher.LaunchServiceHandlerDecorator.launch(LaunchServiceHandlerDecorator.java:30) ~[modlauncher-10.0.9.jar:?]
+	at cpw.mods.modlauncher.LaunchServiceHandler.launch(LaunchServiceHandler.java:53) ~[modlauncher-10.0.9.jar:?]
+	at cpw.mods.modlauncher.LaunchServiceHandler.launch(LaunchServiceHandler.java:71) ~[modlauncher-10.0.9.jar:?]
+	at cpw.mods.modlauncher.Launcher.run(Launcher.java:108) ~[modlauncher-10.0.9.jar:?]
+	at cpw.mods.modlauncher.Launcher.main(Launcher.java:78) ~[modlauncher-10.0.9.jar:?]
+	at cpw.mods.modlauncher.BootstrapLaunchConsumer.accept(BootstrapLaunchConsumer.java:26) ~[modlauncher-10.0.9.jar:?]
+	at cpw.mods.modlauncher.BootstrapLaunchConsumer.accept(BootstrapLaunchConsumer.java:23) ~[modlauncher-10.0.9.jar:?]
+	at cpw.mods.bootstraplauncher.BootstrapLauncher.main(BootstrapLauncher.java:141) ~[bootstraplauncher-1.1.2.jar:?]
+[08Dec2023 14:53:35.072] [main/INFO] [com.mojang.authlib.yggdrasil.YggdrasilAuthenticationService/]: Environment: Environment[sessionHost=https://sessionserver.mojang.com, servicesHost=https://api.minecraftservices.com, name=PROD]
+[08Dec2023 14:53:35.125] [main/WARN] [net.minecraft.server.packs.VanillaPackResourcesBuilder/]: Assets URL 'union:/N:/Projects/Minecraft/ML-1.20/BetterCompatibilityChecker/neoforge/.gradle/repositories/ng_dummy_ng/net/neoforged/neoforge/20.4.3-beta/neoforge-20.4.3-beta.jar%23192!/assets/.mcassetsroot' uses unexpected schema
+[08Dec2023 14:53:35.125] [main/WARN] [net.minecraft.server.packs.VanillaPackResourcesBuilder/]: Assets URL 'union:/N:/Projects/Minecraft/ML-1.20/BetterCompatibilityChecker/neoforge/.gradle/repositories/ng_dummy_ng/net/neoforged/neoforge/20.4.3-beta/neoforge-20.4.3-beta.jar%23192!/data/.mcassetsroot' uses unexpected schema
+[08Dec2023 14:53:35.796] [main/INFO] [net.minecraft.server.Main/]: No existing world data, creating new world
+[08Dec2023 14:53:36.535] [main/INFO] [net.minecraft.world.item.crafting.RecipeManager/]: Loaded 7 recipes
+[08Dec2023 14:53:36.721] [main/INFO] [net.minecraft.advancements.AdvancementTree/]: Loaded 1271 advancements
+[08Dec2023 14:53:37.081] [Server thread/INFO] [net.minecraft.server.dedicated.DedicatedServer/]: Starting minecraft server version 1.20.4
+[08Dec2023 14:53:37.081] [Server thread/INFO] [net.minecraft.server.dedicated.DedicatedServer/]: Loading properties
+[08Dec2023 14:53:37.081] [Server thread/INFO] [net.minecraft.server.dedicated.DedicatedServer/]: Default game type: SURVIVAL
+[08Dec2023 14:53:37.082] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Generating keypair
+[08Dec2023 14:53:37.126] [Server thread/INFO] [net.minecraft.server.dedicated.DedicatedServer/]: Starting Minecraft server on *:25565
+[08Dec2023 14:53:37.197] [Server thread/INFO] [net.minecraft.server.network.ServerConnectionListener/]: Using default channel type
+[08Dec2023 14:53:37.373] [Server thread/WARN] [net.neoforged.neoforge.common.ModConfigSpec/CORE]: Configuration file .\world\serverconfig\neoforge-server.toml is not correct. Correcting
+[08Dec2023 14:53:37.373] [Server thread/WARN] [net.neoforged.neoforge.common.ModConfigSpec/CORE]: Incorrect key server was corrected from null to its default, SimpleCommentedConfig:{}. 
+[08Dec2023 14:53:37.373] [Server thread/WARN] [net.neoforged.neoforge.common.ModConfigSpec/CORE]: Incorrect key server.removeErroringBlockEntities was corrected from null to its default, false. 
+[08Dec2023 14:53:37.373] [Server thread/WARN] [net.neoforged.neoforge.common.ModConfigSpec/CORE]: Incorrect key server.removeErroringEntities was corrected from null to its default, false. 
+[08Dec2023 14:53:37.373] [Server thread/WARN] [net.neoforged.neoforge.common.ModConfigSpec/CORE]: Incorrect key server.fullBoundingBoxLadders was corrected from null to its default, false. 
+[08Dec2023 14:53:37.373] [Server thread/WARN] [net.neoforged.neoforge.common.ModConfigSpec/CORE]: Incorrect key server.permissionHandler was corrected from null to its default, neoforge:default_handler. 
+[08Dec2023 14:53:37.373] [Server thread/WARN] [net.neoforged.neoforge.common.ModConfigSpec/CORE]: Incorrect key server.advertiseDedicatedServerToLan was corrected from null to its default, true. 
+[08Dec2023 14:53:37.397] [Server thread/INFO] [net.minecraft.server.dedicated.DedicatedServer/]: Preparing level "world"
+[08Dec2023 14:53:39.888] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Preparing start region for dimension minecraft:overworld
+[08Dec2023 14:53:40.334] [Worker-Main-7/INFO] [net.minecraft.server.level.progress.LoggerChunkProgressListener/]: Preparing spawn area: 0%
+[08Dec2023 14:53:40.399] [Worker-Main-8/INFO] [net.minecraft.server.level.progress.LoggerChunkProgressListener/]: Preparing spawn area: 0%
+[08Dec2023 14:53:40.899] [Worker-Main-16/INFO] [net.minecraft.server.level.progress.LoggerChunkProgressListener/]: Preparing spawn area: 0%
+[08Dec2023 14:53:41.394] [Worker-Main-9/INFO] [net.minecraft.server.level.progress.LoggerChunkProgressListener/]: Preparing spawn area: 1%
+[08Dec2023 14:53:41.900] [Worker-Main-21/INFO] [net.minecraft.server.level.progress.LoggerChunkProgressListener/]: Preparing spawn area: 5%
+[08Dec2023 14:53:42.391] [Worker-Main-21/INFO] [net.minecraft.server.level.progress.LoggerChunkProgressListener/]: Preparing spawn area: 9%
+[08Dec2023 14:53:42.891] [Worker-Main-16/INFO] [net.minecraft.server.level.progress.LoggerChunkProgressListener/]: Preparing spawn area: 13%
+[08Dec2023 14:53:43.393] [Worker-Main-10/INFO] [net.minecraft.server.level.progress.LoggerChunkProgressListener/]: Preparing spawn area: 16%
+[08Dec2023 14:53:43.889] [Worker-Main-19/INFO] [net.minecraft.server.level.progress.LoggerChunkProgressListener/]: Preparing spawn area: 23%
+[08Dec2023 14:53:44.389] [Worker-Main-18/INFO] [net.minecraft.server.level.progress.LoggerChunkProgressListener/]: Preparing spawn area: 29%
+[08Dec2023 14:53:44.893] [Worker-Main-2/INFO] [net.minecraft.server.level.progress.LoggerChunkProgressListener/]: Preparing spawn area: 37%
+[08Dec2023 14:53:45.389] [Worker-Main-15/INFO] [net.minecraft.server.level.progress.LoggerChunkProgressListener/]: Preparing spawn area: 43%
+[08Dec2023 14:53:45.888] [Worker-Main-12/INFO] [net.minecraft.server.level.progress.LoggerChunkProgressListener/]: Preparing spawn area: 52%
+[08Dec2023 14:53:46.389] [Worker-Main-12/INFO] [net.minecraft.server.level.progress.LoggerChunkProgressListener/]: Preparing spawn area: 57%
+[08Dec2023 14:53:46.891] [Worker-Main-21/INFO] [net.minecraft.server.level.progress.LoggerChunkProgressListener/]: Preparing spawn area: 65%
+[08Dec2023 14:53:47.391] [Worker-Main-16/INFO] [net.minecraft.server.level.progress.LoggerChunkProgressListener/]: Preparing spawn area: 71%
+[08Dec2023 14:53:47.893] [Worker-Main-2/INFO] [net.minecraft.server.level.progress.LoggerChunkProgressListener/]: Preparing spawn area: 80%
+[08Dec2023 14:53:48.389] [Worker-Main-4/INFO] [net.minecraft.server.level.progress.LoggerChunkProgressListener/]: Preparing spawn area: 89%
+[08Dec2023 14:53:48.893] [Worker-Main-16/INFO] [net.minecraft.server.level.progress.LoggerChunkProgressListener/]: Preparing spawn area: 98%
+[08Dec2023 14:53:48.978] [Server thread/INFO] [net.minecraft.server.level.progress.LoggerChunkProgressListener/]: Time elapsed: 9090 ms
+[08Dec2023 14:53:48.979] [Server thread/INFO] [net.minecraft.server.dedicated.DedicatedServer/]: Done (11.608s)! For help, type "help"
+[08Dec2023 14:53:48.987] [Server thread/INFO] [net.neoforged.neoforge.server.permission.PermissionAPI/]: Successfully initialized permission handler neoforge:default_handler
+[08Dec2023 14:53:48.989] [Server thread/INFO] [MixinExtras|Service/]: Initializing MixinExtras via com.llamalad7.mixinextras.service.MixinExtrasServiceImpl(version=0.3.1).

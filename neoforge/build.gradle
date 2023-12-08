@@ -1,0 +1,151 @@
+plugins {
+    id 'idea'
+    id 'net.neoforged.gradle.userdev' version "${neo_gradle}"
+    id 'net.neoforged.gradle.mixin' version "${neo_gradle}"
+}
+
+mixin {
+    config("${mod_id}.mixins.json")
+    config("${mod_id}.neo.mixins.json")
+}
+
+//minecraft {
+//    mappings channel: 'official', version: minecraft_version
+//
+//    // Automatically enable forge AccessTransformers if the file exists
+//    // This location is hardcoded in Forge and can not be changed.
+//    // https://github.com/MinecraftForge/MinecraftForge/blob/be1698bb1554f9c8fa2f58e32b9ab70bc4385e60/fmlloader/src/main/java/net/minecraftforge/fml/loading/moddiscovery/ModFile.java#L123
+//    if (file('src/main/resources/META-INF/accesstransformer.cfg').exists()) {
+//        accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
+//    }
+//
+//    runs {
+//        client {
+//            workingDirectory project.file('run')
+//            ideaModule "${rootProject.name}.${project.name}.main"
+//            taskName 'Client'
+//            property 'mixin.env.remapRefMap', 'true'
+//            property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
+//            mods {
+//                modClientRun {
+//                    source sourceSets.main
+//                    source project(":common").sourceSets.main
+//                }
+//            }
+//        }
+//
+//        server {
+//            workingDirectory project.file('run')
+//            ideaModule "${rootProject.name}.${project.name}.main"
+//            taskName 'Server'
+//            property 'mixin.env.remapRefMap', 'true'
+//            property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
+//            mods {
+//                modServerRun {
+//                    source sourceSets.main
+//                    source project(":common").sourceSets.main
+//                }
+//            }
+//        }
+//
+//        data {
+//            workingDirectory project.file('run')
+//            ideaModule "${rootProject.name}.${project.name}.main"
+//            args '--mod', mod_id, '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
+//            taskName 'Data'
+//            property 'mixin.env.remapRefMap', 'true'
+//            property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
+//            mods {
+//                modDataRun {
+//                    source sourceSets.main
+//                    source project(":common").sourceSets.main
+//                }
+//            }
+//        }
+//    }
+//}
+
+java.toolchain.languageVersion = JavaLanguageVersion.of(17)
+
+runs {
+    configureEach {
+        // Recommended logging data for a userdev environment
+        // The markers can be added/remove as needed separated by commas.
+        // "SCAN": For mods scan.
+        // "REGISTRIES": For firing of registry events.
+        // "REGISTRYDUMP": For getting the contents of all registries.
+        systemProperty 'forge.logging.markers', 'REGISTRIES'
+        systemProperty 'forge.logging.console.level', 'debug'
+
+        modSource project.sourceSets.main
+    }
+
+    client {
+        systemProperty 'forge.enabledGameTestNamespaces', mod_id
+    }
+
+    server {
+        systemProperty 'forge.enabledGameTestNamespaces', mod_id
+        programArgument '--nogui'
+    }
+
+    gameTestServer {
+        systemProperty 'forge.enabledGameTestNamespaces', mod_id
+    }
+
+    data {
+        // example of overriding the workingDirectory set in configureEach above, uncomment if you want to use it
+        // workingDirectory project.file('run-data')
+
+        // Specify the modid for data generation, where to output the resulting resource, and where to look for existing resources.
+        programArguments.addAll '--mod', mod_id, '--all', '--output', file('src/generated/resources/').getAbsolutePath(), '--existing', file('src/main/resources/').getAbsolutePath()
+    }
+}
+
+sourceSets.main.resources { srcDir 'src/generated/resources' }
+
+repositories {
+    maven {
+        url = 'https://maven.fabricmc.net'
+        content {
+            includeGroup "net.fabricmc"
+        }
+    }
+}
+
+configurations {
+    annotationProcessor.exclude group: "org.spongepowered", module: "mixin"
+}
+
+dependencies {
+    implementation "net.neoforged:neoforge:${neo_version}"
+    compileOnly project(":common")
+//    annotationProcessor("net.fabricmc:sponge-mixin:0.12.5+mixin.0.8.5")
+}
+
+Spec<Task> notNeoTask = { Task it -> !it.name.startsWith("neo") } as Spec<Task>
+
+tasks.withType(JavaCompile).matching(notNeoTask).configureEach {
+    source(project(":common").sourceSets.main.allSource)
+}
+
+tasks.withType(Javadoc).matching(notNeoTask).configureEach {
+    source(project(":common").sourceSets.main.allJava)
+}
+
+tasks.named("sourcesJar", Jar) {
+    from(project(":common").sourceSets.main.allSource)
+}
+
+tasks.withType(ProcessResources).matching(notNeoTask).configureEach {
+    from project(":common").sourceSets.main.resources
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            artifactId base.archivesName.get()
+            from components.java
+        }
+    }
+}
