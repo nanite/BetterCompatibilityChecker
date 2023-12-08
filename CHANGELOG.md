@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+## [5.0.0]
+
+- Ported to 1.20.4
+
 ## [4.0.8]
 
 - Switched to using fabric mixin AP
