@@ -1,6 +1,6 @@
 package dev.wuffs.bcc.mixin;
 
-import dev.wuffs.bcc.screen.BCCMultiplayerAddon;
+import dev.wuffs.bcc.client.screen.BCCMultiplayerAddon;
 import dev.wuffs.bcc.contract.ServerDataExtension;
 import dev.wuffs.bcc.data.BetterStatus;
 import dev.wuffs.bcc.data.BetterStatusServerHolder;
@@ -15,9 +15,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-
 @Mixin(value = ServerSelectionList.OnlineServerEntry.class)
-public class ServerEntryMixin {
+public class OnlineServerEntryMixin {
     @Shadow
     @Final
     private ServerData serverData;

@@ -1,4 +1,4 @@
-package dev.wuffs.bcc.client.screen;
+package dev.wuffs.bcc.screen;
 
 import dev.wuffs.bcc.Constants;
 import dev.wuffs.bcc.data.BetterStatus;
