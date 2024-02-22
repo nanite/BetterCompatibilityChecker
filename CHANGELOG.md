@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+## [5.1.2]
+
+- Updated forge,fabric,neo versions
+
 ## [5.1.0]
 
 - Updated forge,fabric,neo versions
