@@ -1,6 +1,6 @@
 plugins {
     id 'fabric-loom' version '1.6-SNAPSHOT' apply(false)
-    id "me.modmuss50.mod-publish-plugin" version "0.4.5"
+    id "me.modmuss50.mod-publish-plugin" version "0.5.1"
 }
 
 ext.isSnapshot = providers.environmentVariable("SNAPSHOT").map {it == "true"}.getOrElse(false)
@@ -91,16 +91,11 @@ publishMods {
     version = "${mod_version}"
     type = STABLE
 
+
     def fabricOptions = publishOptions {
         file = project.provider { project(":fabric").tasks.remapJar }.flatMap { it.archiveFile }
         displayName = "${project.name} Fabric ${mod_version}+mc${minecraft_version}"
         modLoaders.add("fabric")
-    }
-
-    def forgeOptions = publishOptions {
-        file = project.provider { project(":forge").tasks.jar }.flatMap { it.archiveFile }
-        displayName = "${project.name} Forge ${mod_version}+mc${minecraft_version}"
-        modLoaders.add("forge")
     }
 
     def neoOptions = publishOptions {
@@ -128,10 +123,6 @@ publishMods {
         }
     }
 
-    curseforge("curseforgeForge") {
-        from(curseForgeOptions, forgeOptions)
-    }
-
     curseforge("curseforgeNeo") {
         from(curseForgeOptions, neoOptions)
     }
@@ -142,10 +133,6 @@ publishMods {
             requires {
                 slug = "fabric-api"
             }
-        }
-
-        modrinth("modrinthForge") {
-            from(modrinthOptions, forgeOptions)
         }
 
         modrinth("modrinthNeo") {
