@@ -3,11 +3,12 @@ package dev.wuffs.bcc;
 import com.google.gson.Gson;
 import dev.wuffs.bcc.data.BetterStatus;
 import dev.wuffs.bcc.data.BetterStatusServerHolder;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.ModLoadingContext;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.neoforged.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.neoforged.fml.loading.FMLPaths;
 
 import java.io.IOException;
@@ -17,10 +18,10 @@ import java.nio.file.Path;
 @Mod(Constants.MOD_ID)
 public class BCCForge {
     
-    public BCCForge() {
+    public BCCForge(IEventBus modEventBus, ModContainer modContainer) {
         Constants.LOG.info("Better Compatibility Checker starting");
-        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, Config.CONFIG);
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::doCommonSetup);
+        modContainer.registerConfig(ModConfig.Type.COMMON, Config.CONFIG);
+        modEventBus.addListener(this::doCommonSetup);
 //        ModLoadingContext.get().registerExtensionPoint(IExtensionPoint.DisplayTest.class, () -> new IExtensionPoint.DisplayTest(() -> NetworkConstants.IGNORESERVERONLY, (a, b) -> true));
     }
 

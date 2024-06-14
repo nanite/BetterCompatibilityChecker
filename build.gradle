@@ -1,5 +1,5 @@
 plugins {
-    id 'fabric-loom' version '1.5-SNAPSHOT' apply(false)
+    id 'fabric-loom' version '1.6-SNAPSHOT' apply(false)
     id "me.modmuss50.mod-publish-plugin" version "0.4.5"
 }
 
@@ -17,7 +17,7 @@ subprojects {
         archivesName = "${mod_name}-${project.name}"
     }
 
-    java.toolchain.languageVersion = JavaLanguageVersion.of(17)
+    java.toolchain.languageVersion = JavaLanguageVersion.of(21)
     java.withSourcesJar()
 
     jar {
@@ -53,11 +53,11 @@ subprojects {
     tasks.withType(JavaCompile).configureEach {
 
         it.options.encoding = 'UTF-8'
-        it.options.getRelease().set(17)
+        it.options.getRelease().set(21)
     }
 
     processResources {
-        filesMatching(['pack.mcmeta', 'fabric.mod.json','META-INF/mods.toml', 'mods.toml', '*.mixins.json']) {
+        filesMatching(['pack.mcmeta', 'fabric.mod.json','META-INF/neoforge.mods.toml', 'mods.toml', '*.mixins.json']) {
             expand project.properties
         }
     }

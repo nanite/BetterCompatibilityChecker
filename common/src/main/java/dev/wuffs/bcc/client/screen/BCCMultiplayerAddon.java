@@ -1,21 +1,19 @@
-package dev.wuffs.bcc.screen;
+package dev.wuffs.bcc.client.screen;
 
 import dev.wuffs.bcc.Constants;
 import dev.wuffs.bcc.data.BetterStatus;
 import dev.wuffs.bcc.data.BetterStatusServerHolder;
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.multiplayer.JoinMultiplayerScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 
-import java.util.Arrays;
-import java.util.stream.Collectors;
-
 import static dev.wuffs.bcc.CommonClass.comparePingData;
 
 public class BCCMultiplayerAddon {
-    private static final ResourceLocation ICON_SHEET = new ResourceLocation(Constants.MOD_ID, "textures/gui/icons.png");
+    private static final ResourceLocation ICON_SHEET = ResourceLocation.fromNamespaceAndPath(Constants.MOD_ID, "textures/gui/icons.png");
 
     public static void drawBCCChecker(JoinMultiplayerScreen gui, BetterStatus pingData, GuiGraphics guiGraphics, int x, int y, int width, int relativeMouseX, int relativeMouseY) {
         int idx;
@@ -39,7 +37,13 @@ public class BCCMultiplayerAddon {
 
 
         if (relativeMouseX > width - 15 && relativeMouseX < width && relativeMouseY > 10 && relativeMouseY < 26) {
-            gui.setToolTip(Arrays.stream(tooltip.split("\n")).map(Component::literal).collect(Collectors.toList()));
+//            var parts = tooltip.split("\n");
+//            var component = Component.empty();
+//            for (String part : parts) {
+//                component = component.append(Component.literal(part));
+//            }
+
+            gui.setTooltipForNextRenderPass(Minecraft.getInstance().font.split(Component.literal(tooltip), 370));
         }
     }
 }

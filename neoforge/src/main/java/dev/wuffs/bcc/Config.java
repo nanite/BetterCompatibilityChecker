@@ -20,7 +20,7 @@ public class Config {
         modpackProjectID = BUILDER.comment("The CurseForge project ID for the modpack")
                 .defineInRange("modpackProjectID", 0, 0, Integer.MAX_VALUE);
         modpackName = BUILDER.comment("The name of the modpack")
-                .define("modpackName", "PLEASE_CHANGE_ME");
+                .define("modpackName", "CHANGE_ME");
         modpackVersion = BUILDER.comment("The version of the modpack")
                 .define("modpackVersion", "CHANGE_ME");
         useMetadata = BUILDER.comment("Use the metadata.json to determine the modpack version", "ONLY ENABLE THIS IF YOU KNOW WHAT YOU ARE DOING")

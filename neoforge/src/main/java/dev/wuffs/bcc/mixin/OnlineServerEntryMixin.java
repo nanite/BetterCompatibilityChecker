@@ -1,9 +1,9 @@
 package dev.wuffs.bcc.mixin;
 
-import dev.wuffs.bcc.client.screen.BCCMultiplayerAddon;
 import dev.wuffs.bcc.contract.ServerDataExtension;
 import dev.wuffs.bcc.data.BetterStatus;
 import dev.wuffs.bcc.data.BetterStatusServerHolder;
+import dev.wuffs.bcc.client.screen.BCCMultiplayerAddon;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.multiplayer.JoinMultiplayerScreen;
 import net.minecraft.client.gui.screens.multiplayer.ServerSelectionList;
