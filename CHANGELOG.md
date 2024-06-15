@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [21.0.0]
+
+- Ported to 1.21
+- New versioning scheme
+- Dropped forge support
+
 ## [5.1.2]
 
 - Updated forge,fabric,neo versions

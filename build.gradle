@@ -141,8 +141,8 @@ publishMods {
     }
 
     github {
-        additionalFiles.from project.provider { project(":fabric").tasks.remapJar }.flatMap { it.archiveFile }
         additionalFiles.from project.provider { project(":neoforge").tasks.jar }.flatMap { it.archiveFile }
+        file = project.provider { project(":fabric").tasks.remapJar }.flatMap { it.archiveFile }
         repository = "${github_repo}"
         accessToken = providers.environmentVariable("GITHUB_TOKEN")
         commitish = providers.environmentVariable("GITHUB_SHA").orElse("dryRun")
