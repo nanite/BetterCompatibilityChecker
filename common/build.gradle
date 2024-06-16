@@ -11,10 +11,7 @@ dependencies {
 }
 
 repositories {
-    maven {
-        name = 'Creeperhost'
-        url = 'https://maven.creeperhost.net/'
-    }
+    maven { url "https://maven.wuffs.dev/repository/Minecraft" }
 }
 
 loom {
