@@ -16,4 +16,3 @@ jobs:
       java-version: 21
       use-snapshots: true
       gradle-tasks: build publish
-      
