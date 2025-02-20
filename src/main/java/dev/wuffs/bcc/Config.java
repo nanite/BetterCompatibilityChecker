@@ -17,7 +17,7 @@ public class Config {
         ModConfigSpec.Builder BUILDER = new ModConfigSpec.Builder();
 
         BUILDER.comment("General settings").push(CATEGORY_GENERAL);
-        modpackProjectID = BUILDER.comment("modpackProjectID is now deprecated")
+        modpackProjectID = BUILDER.comment("modpackProjectID is now deprecated and will be removed soon")
                 .defineInRange("modpackProjectID", 0, 0, Integer.MAX_VALUE);
         modpackName = BUILDER.comment("The name of the modpack")
                 .define("modpackName", "CHANGE_ME");
