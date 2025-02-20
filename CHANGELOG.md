@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+## [21.1.1]
+
+- Dropped multiloader support
+
 ## [21.1.0]
 
 - Updated to 1.21.1
