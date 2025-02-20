@@ -142,7 +142,7 @@ publishMods {
     version = "${mod_version}"
     type = STABLE
 
-    file = project.provider { project(":neoforge").tasks.jar }.flatMap { it.archiveFile }
+    file = jar.archiveFile
     displayName = "${project.name} NeoForged ${mod_version}+mc${minecraft_version}"
     modLoaders.add("neoforge")
 
