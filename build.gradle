@@ -10,7 +10,9 @@ tasks.named('wrapper', Wrapper).configure {
     distributionType = Wrapper.DistributionType.BIN
 }
 
-version = mod_version
+ext.isSnapshot = providers.environmentVariable("SNAPSHOT").map {it == "true"}.getOrElse(false)
+
+version = "${mod_version}+mc${minecraft_version}${isSnapshot ? '-SNAPSHOT' : ''}"
 group = mod_group_id
 
 repositories {
@@ -110,6 +112,15 @@ publishing {
     repositories {
         maven {
             url "file://${project.projectDir}/repo"
+        }
+        if (providers.environmentVariable("NANITE_TOKEN").orNull) {
+            maven {
+                url "${maven_url}${isSnapshot ? 'snapshots' : 'releases'}"
+                credentials {
+                    username = "nanite"
+                    password = providers.environmentVariable("NANITE_TOKEN").get()
+                }
+            }
         }
     }
 }
