@@ -15,7 +15,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 //@Mixin(ServerStatusPinger.class)
 public class ServerStatusPingerMixin {
 
-    @Shadow @Final
+    @Shadow(aliases = {"val$data"}) @Final
     ServerData val$serverData;
 
     @Inject(
