@@ -1,4 +1,0 @@
-{
-  "bcc.gui.tooltip.compatible_server": "§3Sunucu: %s\n§2İstemci (Sen): %s",
-  "bcc.gui.tooltip.incompatible_server": "§6Sunucuyla aynı mod paketi\n§6sürümünü kullanmıyorsun :(\n \n§4Sunucu: %s\n§4İstemci (Sen): %s"
-}

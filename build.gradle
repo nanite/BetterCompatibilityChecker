@@ -1,87 +1,138 @@
 plugins {
-    id 'fabric-loom' version '1.7-SNAPSHOT' apply(false)
-    id "me.modmuss50.mod-publish-plugin" version "0.7.4"
+    id 'java-library'
+    id 'maven-publish'
+    id 'net.neoforged.moddev' version '2.0.78'
+    id "me.modmuss50.mod-publish-plugin" version "0.8.4"
+    id 'idea'
+}
+
+tasks.named('wrapper', Wrapper).configure {
+    distributionType = Wrapper.DistributionType.BIN
 }
 
 ext.isSnapshot = providers.environmentVariable("SNAPSHOT").map {it == "true"}.getOrElse(false)
 
-allprojects {
-    version = "${mod_version}+mc${minecraft_version}${isSnapshot ? '-SNAPSHOT' : ''}"
+version = "${mod_version}+mc${minecraft_version}${isSnapshot ? '-SNAPSHOT' : ''}"
+group = mod_group_id
+
+repositories {
+    mavenLocal()
 }
 
-subprojects {
-    apply plugin: 'java'
-    apply plugin: 'maven-publish'
+base {
+    archivesName = mod_id
+}
 
-    base {
-        archivesName = "${mod_name}-${project.name}"
+java.toolchain.languageVersion = JavaLanguageVersion.of(21)
+
+neoForge {
+    version = project.neo_version
+
+    parchment {
+        mappingsVersion = project.parchment_mappings_version
+        minecraftVersion = project.parchment_minecraft_version
     }
 
-    java.toolchain.languageVersion = JavaLanguageVersion.of(21)
-    java.withSourcesJar()
+    runs {
+        client {
+            client()
 
-    jar {
-        from(rootProject.file("LICENSE")) {
-            rename { "${it}_${mod_name}" }
+            systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
         }
-        manifest {
-            attributes([
-                    'Specification-Title'     : mod_name,
-                    'Specification-Vendor'    : mod_author,
-                    'Specification-Version'   : project.jar.archiveVersion,
-                    'Implementation-Title'    : project.name,
-                    'Implementation-Version'  : project.jar.archiveVersion,
-                    'Implementation-Vendor'   : mod_author,
-                    'Implementation-Timestamp': new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
-                    'Timestamp'               : System.currentTimeMillis(),
-                    'Built-On-Java'           : "${System.getProperty('java.vm.version')} (${System.getProperty('java.vm.vendor')})",
-                    'Built-On-Minecraft'      : minecraft_version
-            ])
+
+        server {
+            server()
+            programArgument '--nogui'
+            systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
+        }
+
+        gameTestServer {
+            type = "gameTestServer"
+            systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
+        }
+
+        data {
+            data()
+
+            programArguments.addAll '--mod', project.mod_id, '--all', '--output', file('src/generated/resources/').getAbsolutePath(), '--existing', file('src/main/resources/').getAbsolutePath()
+        }
+
+        configureEach {
+            systemProperty 'forge.logging.markers', 'REGISTRIES'
+            logLevel = org.slf4j.event.Level.DEBUG
+            gameDirectory = layout.projectDir.dir("run/$name")
         }
     }
 
-    sourcesJar {
-        from(rootProject.file("LICENSE")) {
-            rename { "${it}_${mod_name}" }
+    mods {
+        "${mod_id}" {
+            sourceSet(sourceSets.main)
         }
     }
+}
 
+sourceSets.main.resources { srcDir 'src/generated/resources' }
+
+configurations {
+    runtimeClasspath.extendsFrom localRuntime
+}
+
+dependencies {
+}
+
+var generateModMetadata = tasks.register("generateModMetadata", ProcessResources) {
+    var replaceProperties = [
+            minecraft_version      : minecraft_version,
+            minecraft_version_range: minecraft_version_range,
+            neo_version            : neo_version,
+            neo_version_range      : neo_version_range,
+            loader_version_range   : loader_version_range,
+            mod_id                 : mod_id,
+            mod_name               : mod_name,
+            mod_license            : mod_license,
+            mod_version            : mod_version,
+            mod_authors            : mod_authors,
+            mod_description        : mod_description
+    ]
+    inputs.properties replaceProperties
+    expand replaceProperties
+    from "src/main/templates"
+    into "build/generated/sources/modMetadata"
+}
+
+sourceSets.main.resources.srcDir generateModMetadata
+neoForge.ideSyncTask generateModMetadata
+
+publishing {
+    publications {
+        register('mavenJava', MavenPublication) {
+            from components.java
+        }
+    }
     repositories {
-        mavenCentral()
-    }
-
-    tasks.withType(JavaCompile).configureEach {
-
-        it.options.encoding = 'UTF-8'
-        it.options.getRelease().set(21)
-    }
-
-    processResources {
-        filesMatching(['pack.mcmeta', 'fabric.mod.json','META-INF/neoforge.mods.toml', 'mods.toml', '*.mixins.json']) {
-            expand project.properties
+        maven {
+            url "file://${project.projectDir}/repo"
         }
-    }
-
-    // Disables Gradle's custom module metadata from being published to maven. The
-    // metadata includes mapped dependencies which are not reasonably consumable by
-    // other mod developers.
-    tasks.withType(GenerateModuleMetadata).configureEach {
-
-        enabled = false
-    }
-
-    publishing {
-        repositories {
-            if (providers.environmentVariable("NANITE_TOKEN").orNull) {
-                maven {
-                    url "${maven_url}${isSnapshot ? 'snapshots' : 'releases'}"
-                    credentials {
-                        username = "nanite"
-                        password = providers.environmentVariable("NANITE_TOKEN").get()
-                    }
+        if (providers.environmentVariable("NANITE_TOKEN").orNull) {
+            maven {
+                url "${maven_url}${isSnapshot ? 'snapshots' : 'releases'}"
+                credentials {
+                    username = "nanite"
+                    password = providers.environmentVariable("NANITE_TOKEN").get()
                 }
             }
         }
+    }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8' // Use the UTF-8 charset for Java compilation
+}
+
+idea {
+    module {
+        downloadSources = true
+        downloadJavadoc = true
     }
 }
 
@@ -91,58 +142,26 @@ publishMods {
     version = "${mod_version}"
     type = STABLE
 
+    file = jar.archiveFile
+    displayName = "${project.name} NeoForged ${mod_version}+mc${minecraft_version}"
+    modLoaders.add("neoforge")
 
-    def fabricOptions = publishOptions {
-        file = project.provider { project(":fabric").tasks.remapJar }.flatMap { it.archiveFile }
-        displayName = "${project.name} Fabric ${mod_version}+mc${minecraft_version}"
-        modLoaders.add("fabric")
-    }
-
-    def neoOptions = publishOptions {
-        file = project.provider { project(":neoforge").tasks.jar }.flatMap { it.archiveFile }
-        displayName = "${project.name} NeoForged ${mod_version}+mc${minecraft_version}"
-        modLoaders.add("neoforge")
-    }
-
-    def curseForgeOptions = curseforgeOptions {
+    curseforge {
         accessToken = providers.environmentVariable("CURSE_TOKEN")
         projectId = "${curseforge_id}"
         minecraftVersions.add("${minecraft_version}")
     }
 
-    def modrinthOptions = modrinthOptions {
-        accessToken = providers.environmentVariable("MODRINTH_TOKEN")
-        projectId = "${modrinth_id}"
-        minecraftVersions.add("${minecraft_version}")
-    }
-
-    curseforge("curseforgeFabric") {
-        from(curseForgeOptions, fabricOptions)
-        requires {
-            slug = "fabric-api"
-        }
-    }
-
-    curseforge("curseforgeNeo") {
-        from(curseForgeOptions, neoOptions)
-    }
-
     if (providers.environmentVariable("MODRINTH_TOKEN").getOrNull() != null) {
-        modrinth("modrinthFabric") {
-            from(modrinthOptions, fabricOptions)
-            requires {
-                slug = "fabric-api"
-            }
-        }
-
-        modrinth("modrinthNeo") {
-            from(modrinthOptions, neoOptions)
+        modrinth {
+            accessToken = providers.environmentVariable("MODRINTH_TOKEN")
+            projectId = "${modrinth_id}"
+            minecraftVersions.add("${minecraft_version}")
         }
     }
 
     github {
-        additionalFiles.from project.provider { project(":neoforge").tasks.jar }.flatMap { it.archiveFile }
-        file = project.provider { project(":fabric").tasks.remapJar }.flatMap { it.archiveFile }
+        file = jar.archiveFile
         repository = "${github_repo}"
         accessToken = providers.environmentVariable("GITHUB_TOKEN")
         commitish = providers.environmentVariable("GITHUB_SHA").orElse("dryRun")
