@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+## [21.1.3]
+
+- Bump neoforge version
+
 ## [21.1.2]
 
 - Fix: add alias to work in production
