@@ -40,6 +40,7 @@ public class BetterCompatibilityChecker
                 try {
                     LOGGER.info("Loading metadata.json");
                     Metadata metadata = new Gson().fromJson(Files.newBufferedReader(metaFile), Metadata.class);
+                    LOGGER.info("Loaded metadata.json - Modpack: {} | Version: {}", metadata.name, metadata.version.name);
                     BetterStatusServerHolder.INSTANCE.setStatus(new BetterStatus(
                             metadata.name,
                             metadata.version.name,
