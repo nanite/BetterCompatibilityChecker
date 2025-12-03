@@ -47,6 +47,7 @@ public class BetterCompatibilityChecker
                             metadata.version.name,
                             true
                     ));
+                    registerCrashCallable();
                     return;
                 }catch(IOException e) {
                     LOGGER.error("Failed to read metadata.json", e);
@@ -60,13 +61,17 @@ public class BetterCompatibilityChecker
                 false
         ));
 
-        BetterStatus status = BetterStatusServerHolder.INSTANCE.getStatus();
-        LOGGER.info("Loaded BetterCompatibilityChecker - Modpack: {} | Version: {}", status.name(), status.version());
-        CrashReportCallables.registerCrashCallable("BetterCompatibilityChecker", () -> "Modpack Name: " + status.name() + " | Modpack Version: " + status.version());
+        registerCrashCallable();
     }
 
     public static boolean comparePingData(BetterStatus pingData) {
         BetterStatus status = BetterStatusServerHolder.INSTANCE.getStatus();
         return pingData.name().equals(status.name()) && pingData.version().equals(status.version());
+    }
+
+    private static void registerCrashCallable() {
+        BetterStatus status = BetterStatusServerHolder.INSTANCE.getStatus();
+        LOGGER.info("Loaded BetterCompatibilityChecker - Modpack: {} | Version: {}", status.name(), status.version());
+        CrashReportCallables.registerCrashCallable("BetterCompatibilityChecker", () -> "Modpack Name: " + status.name() + " | Modpack Version: " + status.version());
     }
 }

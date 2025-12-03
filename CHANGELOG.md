@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+## [21.1.7]
+
+- Fixed not logging the modpack name and version after loading the metajson
+
 ## [21.1.6]
 
 - More logging
