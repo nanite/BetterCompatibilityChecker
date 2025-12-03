@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [21.1.6]
+
+- More logging
+  - Logs the modpack name and version after setup
+  - Adds the modpack name and version to the crash report
+
 ## [21.1.3]
 
 - Bump neoforge version

@@ -5,6 +5,7 @@ import com.mojang.logging.LogUtils;
 import dev.wuffs.bcc.data.BetterStatus;
 import dev.wuffs.bcc.data.BetterStatusServerHolder;
 import net.neoforged.bus.api.IEventBus;
+import net.neoforged.fml.CrashReportCallables;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
@@ -58,11 +59,14 @@ public class BetterCompatibilityChecker
                 Config.modpackVersion.get(),
                 false
         ));
+
+        BetterStatus status = BetterStatusServerHolder.INSTANCE.getStatus();
+        LOGGER.info("Loaded BetterCompatibilityChecker - Modpack: {} | Version: {}", status.name(), status.version());
+        CrashReportCallables.registerCrashCallable("BetterCompatibilityChecker", () -> "Modpack Name: " + status.name() + " | Modpack Version: " + status.version());
     }
 
     public static boolean comparePingData(BetterStatus pingData) {
         BetterStatus status = BetterStatusServerHolder.INSTANCE.getStatus();
         return pingData.name().equals(status.name()) && pingData.version().equals(status.version());
     }
-
 }
