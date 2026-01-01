@@ -119,7 +119,7 @@ publishMods {
     def createOptions = (String platform, String taskName) -> {
         publishOptions {
             file = project.provider { project(":$platform").tasks[taskName] }.flatMap { it.archiveFile }
-            displayName = "Better Compatability Checker - ${mod_version}"
+            displayName = "Better Compatability Checker - ${platform} - ${mod_version}"
             modLoaders.add(platform.toLowerCase())
         }
     }
