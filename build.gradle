@@ -165,7 +165,7 @@ publishMods {
 
     github {
         accessToken = providers.environmentVariable("GITHUB_TOKEN")
-        repository = "Nanite/Better-Compatability-Checker"
+        repository = "Nanite/BetterCompatibilityChecker"
         commitish = providers.environmentVariable("GITHUB_SHA").orElse("dryRun")
         tagName = providers.environmentVariable("GITHUB_REF_NAME").orElse("dryRun")
 
