@@ -8,12 +8,12 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.multiplayer.JoinMultiplayerScreen;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 import static dev.wuffs.bcc.BetterCompatibilityChecker.comparePingData;
 
 public class CompatabilityRender {
-    private static final ResourceLocation ICON_SHEET = ResourceLocation.fromNamespaceAndPath(BetterCompatibilityChecker.MOD_ID, "textures/gui/icons.png");
+    private static final Identifier ICON_SHEET = Identifier.fromNamespaceAndPath(BetterCompatibilityChecker.MOD_ID, "textures/gui/icons.png");
 
     public static void render(JoinMultiplayerScreen gui, BetterStatus serverStatus, GuiGraphics guiGraphics, int x, int y, int width, int mouseX, int mouseY) {
         if (serverStatus == null) {
