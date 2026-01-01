@@ -112,7 +112,7 @@ subprojects {
 
 publishMods {
     dryRun = providers.environmentVariable("CURSE_TOKEN").getOrNull() == null
-    changelog = file("./CHANGELOG.md").text
+    changelog = createChangelog()
     version = "${mod_version}"
     type = STABLE
 
@@ -127,14 +127,16 @@ publishMods {
     def curseForgeOptions = curseforgeOptions {
         accessToken = providers.environmentVariable("CURSE_TOKEN")
         minecraftVersions.add("${minecraft_version}")
-        minecraftVersions.add("1.21.2")
+        minecraftVersions.add("1.21.4")
+        minecraftVersions.add("1.21.5")
         javaVersions.add(JavaVersion.VERSION_21)
     }
 
     def modrinthOptions = modrinthOptions {
         accessToken = providers.environmentVariable("MODRINTH_TOKEN")
         minecraftVersions.add("${minecraft_version}")
-        minecraftVersions.add("1.21.2")
+        minecraftVersions.add("1.21.4")
+        minecraftVersions.add("1.21.5")
     }
 
     curseforge("curseforgeNeoforge") {
@@ -170,4 +172,35 @@ publishMods {
         file = project.provider { project(":neoforge").tasks.jar }.flatMap { it.archiveFile }
         additionalFiles.from project.provider { project(":fabric").tasks.remapJar }.flatMap { it.archiveFile }
     }
+}
+
+def createChangelog() {
+    def changelogFile = file("./CHANGELOG.md")
+    if (!changelogFile.exists()) {
+        return "No changelog available."
+    }
+
+    def changelogText = changelogFile.text
+    def lines = changelogText.readLines()
+
+    def output = ""
+    def capture = false
+    for (line in lines) {
+        if (line.startsWith("## ")) {
+            if (capture) {
+                break
+            }
+
+            if (line.contains(project.version)) {
+                capture = true
+                continue
+            }
+        }
+
+        if (capture) {
+            output += line + "\n"
+        }
+    }
+
+    return output.trim()
 }
