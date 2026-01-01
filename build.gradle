@@ -1,7 +1,7 @@
 plugins {
     id 'java-library'
-    id 'fabric-loom' version '1.14.9' apply(false)
-    id 'net.neoforged.moddev' version '2.0.112' apply(false)
+    id 'net.fabricmc.fabric-loom' version '1.14.10' apply(false)
+    id 'net.neoforged.moddev' version '2.0.134' apply(false)
     id "me.modmuss50.mod-publish-plugin" version "1.1.0"
 }
 
@@ -23,7 +23,7 @@ allprojects {
 
     tasks.withType(JavaCompile).configureEach {
         options.encoding = 'UTF-8'
-        options.release = 21
+        options.release = 25
     }
 
     idea {
