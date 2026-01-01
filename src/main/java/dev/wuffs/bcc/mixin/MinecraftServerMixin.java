@@ -1,7 +1,7 @@
 package dev.wuffs.bcc.mixin;
 
+import dev.wuffs.bcc.BetterCompatibilityChecker;
 import dev.wuffs.bcc.data.BetterStatus;
-import dev.wuffs.bcc.data.BetterStatusServerHolder;
 import dev.wuffs.bcc.data.ExtendedServerStatus;
 import net.minecraft.network.protocol.status.ServerStatus;
 import net.minecraft.server.MinecraftServer;
@@ -15,7 +15,7 @@ public class MinecraftServerMixin {
     @Inject(method = "buildServerStatus", at = @At("RETURN"))
     private void bcc$injectBetterStatus(CallbackInfoReturnable<ServerStatus> cir) {
         ServerStatus status = cir.getReturnValue();
-        BetterStatus betterStatus = BetterStatusServerHolder.INSTANCE.getStatus();
+        BetterStatus betterStatus = BetterCompatibilityChecker.getBetterStatus();
         if (betterStatus == null) {
             return;
         }

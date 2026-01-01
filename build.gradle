@@ -36,28 +36,30 @@ neoForge {
     runs {
         client {
             client()
-
-            systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
         }
 
         server {
             server()
             programArgument '--nogui'
-            systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
+        }
+
+        incompatbileServer {
+            server()
+            programArgument '--nogui'
+
         }
 
         gameTestServer {
             type = "gameTestServer"
-            systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
         }
 
         data {
             data()
-
             programArguments.addAll '--mod', project.mod_id, '--all', '--output', file('src/generated/resources/').getAbsolutePath(), '--existing', file('src/main/resources/').getAbsolutePath()
         }
 
         configureEach {
+            systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
             systemProperty 'forge.logging.markers', 'REGISTRIES'
             logLevel = org.slf4j.event.Level.DEBUG
             gameDirectory = layout.projectDir.dir("run/$name")
