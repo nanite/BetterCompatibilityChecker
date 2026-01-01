@@ -6,7 +6,7 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.multiplayer.JoinMultiplayerScreen;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 
@@ -35,10 +35,10 @@ public class CompatabilityRender {
         String tooltip = Component.translatable(langKey, (serverStatus.name() + " " + serverStatus.version()), (localStatus.name() + " " + localStatus.version())).getString();
         tooltip = tooltip + "\n \n" + ChatFormatting.DARK_GRAY + "Better Compatibility Checker";
 
-        guiGraphics.blit(RenderType::guiTextured, ICON_SHEET, x + width - 18, y + 10,0, idx, 16, 16, 16, 32);
+        guiGraphics.blit(RenderPipelines.GUI_TEXTURED, ICON_SHEET, x + width - 18, y + 10,0, idx, 16, 16, 16, 32);
 
         if (mouseX > width - 15 && mouseX < width && mouseY > 10 && mouseY < 26) {
-            gui.setTooltipForNextRenderPass(Minecraft.getInstance().font.split(Component.literal(tooltip), 370));
+            guiGraphics.setTooltipForNextFrame(Minecraft.getInstance().font.split(Component.literal(tooltip), 370), mouseX + x, mouseY + y);
         }
     }
 }

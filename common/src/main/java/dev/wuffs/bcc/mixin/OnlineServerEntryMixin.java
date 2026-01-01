@@ -25,7 +25,7 @@ public class OnlineServerEntryMixin {
     @Final
     private JoinMultiplayerScreen screen;
 
-    @Inject(method = "render(Lnet/minecraft/client/gui/GuiGraphics;IIIIIIIZF)V", at = @At(value = "HEAD"))
+    @Inject(method = "render(Lnet/minecraft/client/gui/GuiGraphics;IIIIIIIZF)V", at = @At(value = "TAIL"))
     private void render(GuiGraphics guiGraphics, int i, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta, CallbackInfo ci) {
         int m = mouseX - x;
         int n = mouseY - y;
@@ -35,6 +35,7 @@ public class OnlineServerEntryMixin {
         if (betterData == null || BetterCompatibilityChecker.getBetterStatus() == null) {
             return;
         }
+
         CompatabilityRender.render(this.screen, betterData, guiGraphics, x, y, entryWidth, m, n);
     }
 }
