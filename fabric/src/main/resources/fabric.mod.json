@@ -13,7 +13,7 @@
     "issues": "${mod_github}/issues"
   },
   "license": "MIT",
-  "icon": "assets/${mod_id}/icon.png",
+  "icon": "assets/${mod_id}/logo.png",
   "environment": "*",
   "entrypoints": {
     "main": [
