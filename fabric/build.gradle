@@ -1,0 +1,70 @@
+plugins {
+    id 'fabric-loom'
+}
+
+loom {
+//    accessWidenerPath = project(":common").file("src/main/resources/bcc.accesswidener")
+
+    runs {
+        client {
+            source = sourceSets.main
+            ideConfigGenerated = true
+            client()
+        }
+
+        server {
+            source = sourceSets.main
+            ideConfigGenerated = true
+            server()
+        }
+
+        incompatibleServer {
+            source = sourceSets.main
+            ideConfigGenerated = true
+            server()
+        }
+
+        configureEach {
+            runDir = "run/${it.name}"
+        }
+    }
+
+    mods {
+        "bcc" {
+            sourceSet sourceSets.main
+            sourceSet("main", project(":common"))
+        }
+    }
+
+    mixin {
+        useLegacyMixinAp = false
+    }
+}
+
+dependencies {
+    minecraft "com.mojang:minecraft:${project.minecraft_version}"
+    mappings loom.officialMojangMappings()
+
+    modImplementation "net.fabricmc:fabric-loader:${project.fabric_loader_version}"
+    modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
+
+    modApi "fuzs.forgeconfigapiport:forgeconfigapiport-fabric:${project.forge_config_api_version}"
+}
+
+repositories {
+}
+
+java {
+    withSourcesJar()
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            groupId project.group
+            artifactId project.base.archivesName.get()
+            version project.version
+            from components.java
+        }
+    }
+}

@@ -1,0 +1,6 @@
+{
+  "pack": {
+    "description": "bcc resources",
+    "pack_format": ${pack_version}
+  }
+}

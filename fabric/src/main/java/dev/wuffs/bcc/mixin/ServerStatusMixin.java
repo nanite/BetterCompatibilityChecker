@@ -15,6 +15,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.Optional;
 
+@SuppressWarnings("unused")
 @Mixin(ServerStatus.class)
 public class ServerStatusMixin implements ExtendedServerStatus {
     @Shadow
@@ -38,11 +39,10 @@ public class ServerStatusMixin implements ExtendedServerStatus {
                 ServerStatus.Players.CODEC.lenientOptionalFieldOf("players").forGetter(ServerStatus::players),
                 ServerStatus.Version.CODEC.lenientOptionalFieldOf("version").forGetter(ServerStatus::version),
                 ServerStatus.Favicon.CODEC.lenientOptionalFieldOf("favicon").forGetter(ServerStatus::favicon),
-                Codec.BOOL.optionalFieldOf("enforcesSecureChat", false).forGetter(ServerStatus::enforcesSecureChat),
-                Codec.BOOL.optionalFieldOf("isModded", Boolean.FALSE).forGetter(ServerStatus::isModded),
+                Codec.BOOL.lenientOptionalFieldOf("enforcesSecureChat", false).forGetter(ServerStatus::enforcesSecureChat),
                 BetterStatus.CODEC.lenientOptionalFieldOf("betterStatus").forGetter(status -> ((ExtendedServerStatus) (Object) status).getBetterData())
-        ).apply(instance, (description, players, version, favicon, enforcesSecureChat, isModded, betterStatus) -> {
-            ServerStatus status = new ServerStatus(description, players, version, favicon, enforcesSecureChat, isModded);
+        ).apply(instance, (description, players, version, favicon, enforcesSecureChat, betterStatus) -> {
+            ServerStatus status = new ServerStatus(description, players, version, favicon, enforcesSecureChat);
             ((ExtendedServerStatus) (Object) status).setBetterData(betterStatus.orElse(null));
             return status;
         }));

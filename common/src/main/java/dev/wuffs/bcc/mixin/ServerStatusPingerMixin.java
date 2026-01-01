@@ -1,7 +1,7 @@
 package dev.wuffs.bcc.mixin;
 
-import dev.wuffs.bcc.data.ServerDataExtension;
 import dev.wuffs.bcc.data.ExtendedServerStatus;
+import dev.wuffs.bcc.data.ServerDataExtension;
 import net.minecraft.client.multiplayer.ServerData;
 import net.minecraft.network.protocol.status.ClientboundStatusResponsePacket;
 import org.spongepowered.asm.mixin.Final;
@@ -14,8 +14,9 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(targets = "net/minecraft/client/multiplayer/ServerStatusPinger$1")
 public class ServerStatusPingerMixin {
 
-    @Shadow(aliases = {"val$data"}) @Final
-    ServerData val$serverData;
+    @Shadow(aliases = {"val$p_105460_"})
+    @Final
+    ServerData val$data;
 
     @Inject(
             method = "handleStatusResponse(Lnet/minecraft/network/protocol/status/ClientboundStatusResponsePacket;)V",
@@ -28,7 +29,7 @@ public class ServerStatusPingerMixin {
     )
     void onHandleResponse(ClientboundStatusResponsePacket packet, CallbackInfo ci) {
         ((ExtendedServerStatus) (Object) packet.status()).getBetterData().ifPresent(
-                data -> ((ServerDataExtension) val$serverData).setBetterData(data)
+                data -> ((ServerDataExtension) this.val$data).setBetterData(data)
         );
     }
 }

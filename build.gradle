@@ -1,140 +1,112 @@
 plugins {
     id 'java-library'
-    id 'maven-publish'
-    id 'net.neoforged.moddev' version '2.0.78'
-    id "me.modmuss50.mod-publish-plugin" version "1.0.0"
-    id 'idea'
+    id 'fabric-loom' version '1.14.9' apply(false)
+    id 'net.neoforged.moddev' version '2.0.112' apply(false)
+    id "me.modmuss50.mod-publish-plugin" version "1.1.0"
 }
 
 tasks.named('wrapper', Wrapper).configure {
     distributionType = Wrapper.DistributionType.BIN
 }
 
-ext.isSnapshot = providers.environmentVariable("SNAPSHOT").map {it == "true"}.getOrElse(false)
+def isSnapshot = providers.environmentVariable("SNAPSHOT").map {it == "true"}.getOrElse(false)
 
-version = "${mod_version}+mc${minecraft_version}${isSnapshot ? '-SNAPSHOT' : ''}"
-group = mod_group_id
+version = mod_version + (isSnapshot ? '-SNAPSHOT' : '')
+group = 'dev.wuffs'
 
-repositories {
-    mavenLocal()
-}
+allprojects {
+    apply plugin: 'idea'
+    apply plugin: 'java-library'
+    apply plugin: 'maven-publish'
 
-base {
-    archivesName = mod_id
-}
+    version = mod_version
 
-java.toolchain.languageVersion = JavaLanguageVersion.of(21)
-
-neoForge {
-    version = project.neo_version
-
-    parchment {
-        mappingsVersion = project.parchment_mappings_version
-        minecraftVersion = project.parchment_minecraft_version
+    tasks.withType(JavaCompile).configureEach {
+        options.encoding = 'UTF-8'
+        options.release = 21
     }
 
-    runs {
-        client {
-            client()
-        }
-
-        server {
-            server()
-            programArgument '--nogui'
-        }
-
-        incompatbileServer {
-            server()
-            programArgument '--nogui'
-
-        }
-
-        gameTestServer {
-            type = "gameTestServer"
-        }
-
-        data {
-            data()
-            programArguments.addAll '--mod', project.mod_id, '--all', '--output', file('src/generated/resources/').getAbsolutePath(), '--existing', file('src/main/resources/').getAbsolutePath()
-        }
-
-        configureEach {
-            systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
-            systemProperty 'forge.logging.markers', 'REGISTRIES'
-            logLevel = org.slf4j.event.Level.DEBUG
-            gameDirectory = layout.projectDir.dir("run/$name")
+    idea {
+        module {
+            downloadSources = true
+            downloadJavadoc = true
         }
     }
 
-    mods {
-        "${mod_id}" {
-            sourceSet(sourceSets.main)
+    jar {
+        from(rootProject.file("LICENSE").toString()) {
+            rename { "${it}_bettercompatabilitychecker" }
         }
     }
 }
 
-sourceSets.main.resources { srcDir 'src/generated/resources' }
-
-configurations {
-    runtimeClasspath.extendsFrom localRuntime
-}
-
-dependencies {
-}
-
-var generateModMetadata = tasks.register("generateModMetadata", ProcessResources) {
-    var replaceProperties = [
-            minecraft_version      : minecraft_version,
-            minecraft_version_range: minecraft_version_range,
-            neo_version            : neo_version,
-            neo_version_range      : neo_version_range,
-            loader_version_range   : loader_version_range,
-            mod_id                 : mod_id,
-            mod_name               : mod_name,
-            mod_license            : mod_license,
-            mod_version            : mod_version,
-            mod_authors            : mod_authors,
-            mod_description        : mod_description
-    ]
-    inputs.properties replaceProperties
-    expand replaceProperties
-    from "src/main/templates"
-    into "build/generated/sources/modMetadata"
-}
-
-sourceSets.main.resources.srcDir generateModMetadata
-neoForge.ideSyncTask generateModMetadata
-
-publishing {
-    publications {
-        register('mavenJava', MavenPublication) {
-            from components.java
-        }
+subprojects {
+    base {
+        archivesName = "better-compatability-checker-$project.name"
     }
+
     repositories {
         maven {
-            url "file://${project.projectDir}/repo"
+            name = "Fuzs Mod Resources"
+            url = "https://raw.githubusercontent.com/Fuzss/modresources/main/maven/"
         }
-        if (providers.environmentVariable("NANITE_TOKEN").orNull) {
+    }
+
+    if (project.name != "common") {
+        dependencies {
+            api project(":common")
+        }
+
+        jar {
+            from project(":common").sourceSets.main.output
+        }
+    }
+
+    def replaceProperties = [
+            minecraft_version: project.minecraft_version,
+            minecraft_version_range_mvn: project.minecraft_version_range_mvn,
+            minecraft_version_range_sem: project.minecraft_version_range_sem,
+            neoforge_version: project.neoforge_version,
+            neoforge_version_range: project.neoforge_version_range,
+            loader_version_range: project.loader_version_range,
+            fabric_api_version: project.fabric_api_version,
+            fabric_api_version_range: project.fabric_api_version_range,
+            fabric_loader_version: project.fabric_loader_version,
+            fabric_loader_version_range: project.fabric_loader_version_range,
+            version: version,
+            mod_id: project.mod_id,
+            mod_name: project.mod_name,
+            mod_license: project.mod_license,
+            mod_group_id: project.mod_group_id,
+            mod_authors: project.mod_authors,
+            mod_description: project.mod_description,
+            mod_github: project.mod_github,
+            pack_version: project.pack_version,
+    ]
+
+    processResources {
+        inputs.properties replaceProperties
+
+        filesMatching(["META-INF/neoforge.mods.toml", "fabric.mod.json", "META-INF/mods.toml", "pack.mcmeta"]) {
+            expand replaceProperties
+        }
+    }
+
+    publishing {
+        repositories {
             maven {
-                url "${maven_url}${isSnapshot ? 'snapshots' : 'releases'}"
-                credentials {
-                    username = "nanite"
-                    password = providers.environmentVariable("NANITE_TOKEN").get()
+                url "file://${project.projectDir}/repo"
+            }
+            if (providers.environmentVariable("NANITE_TOKEN").orNull) {
+                maven {
+                    url "${maven_url}${isSnapshot ? 'snapshots' : 'releases'}"
+                    credentials {
+                        username = "nanite"
+                        password = providers.environmentVariable("NANITE_TOKEN").get()
+                    }
                 }
             }
         }
-    }
-}
-
-tasks.withType(JavaCompile).configureEach {
-    options.encoding = 'UTF-8' // Use the UTF-8 charset for Java compilation
-}
-
-idea {
-    module {
-        downloadSources = true
-        downloadJavadoc = true
     }
 }
 
@@ -144,28 +116,58 @@ publishMods {
     version = "${mod_version}"
     type = STABLE
 
-    file = jar.archiveFile
-    displayName = "${project.name} NeoForged ${mod_version}+mc${minecraft_version}"
-    modLoaders.add("neoforge")
-
-    curseforge {
-        accessToken = providers.environmentVariable("CURSE_TOKEN")
-        projectId = "${curseforge_id}"
-        minecraftVersions.add("${minecraft_version}")
-    }
-
-    if (providers.environmentVariable("MODRINTH_TOKEN").getOrNull() != null) {
-        modrinth {
-            accessToken = providers.environmentVariable("MODRINTH_TOKEN")
-            projectId = "${modrinth_id}"
-            minecraftVersions.add("${minecraft_version}")
+    def createOptions = (String platform, String taskName) -> {
+        publishOptions {
+            file = project.provider { project(":$platform").tasks[taskName] }.flatMap { it.archiveFile }
+            displayName = "Better Compatability Checker - ${mod_version}"
+            modLoaders.add(platform.toLowerCase())
         }
     }
 
+    def curseForgeOptions = curseforgeOptions {
+        accessToken = providers.environmentVariable("CURSE_TOKEN")
+        minecraftVersions.add("${minecraft_version}")
+        minecraftVersions.add("1.21.2")
+        javaVersions.add(JavaVersion.VERSION_21)
+    }
+
+    def modrinthOptions = modrinthOptions {
+        accessToken = providers.environmentVariable("MODRINTH_TOKEN")
+        minecraftVersions.add("${minecraft_version}")
+        minecraftVersions.add("1.21.2")
+    }
+
+    curseforge("curseforgeNeoforge") {
+        from(curseForgeOptions, createOptions("neoforge", "jar"))
+        projectId = curseforge_id
+    }
+
+    curseforge("curseforgeFabric") {
+        from(curseForgeOptions, createOptions("fabric", "remapJar"))
+        projectId = curseforge_id
+        requires("fabric-api")
+        requires("forge-config-api-port")
+    }
+
+    modrinth("modrinthNeoforge") {
+        from(modrinthOptions, createOptions("neoforge", "jar"))
+        projectId = "${modrinth_id}"
+    }
+
+    modrinth("modrinthFabric") {
+        from(modrinthOptions, createOptions("fabric", "remapJar"))
+        projectId = "${modrinth_id}"
+        requires("fabric-api")
+        requires("forge-config-api-port")
+    }
+
     github {
-        file = jar.archiveFile
-        repository = "${github_repo}"
         accessToken = providers.environmentVariable("GITHUB_TOKEN")
+        repository = "Nanite/Better-Compatability-Checker"
         commitish = providers.environmentVariable("GITHUB_SHA").orElse("dryRun")
+        tagName = providers.environmentVariable("GITHUB_REF_NAME").orElse("dryRun")
+
+        file = project.provider { project(":neoforge").tasks.jar }.flatMap { it.archiveFile }
+        additionalFiles.from project.provider { project(":fabric").tasks.remapJar }.flatMap { it.archiveFile }
     }
 }
