@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [21.6.0]
+
+### Changed
+
+- Updated to 1.21.6 -> 1.21.8
+
 ## [21.3.1]
 
 ### Changed
