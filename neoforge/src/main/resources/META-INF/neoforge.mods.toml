@@ -9,6 +9,7 @@ modId="${mod_id}"
 version="${version}"
 displayName="${mod_name}"
 displayURL="${mod_github}"
+logoFile="assets/${mod_id}/logo.png"
 
 authors="${mod_authors}"
 description='''${mod_description}'''
