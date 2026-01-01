@@ -1,9 +1,9 @@
 package dev.wuffs.bcc.mixin;
 
 import dev.wuffs.bcc.BetterCompatibilityChecker;
-import dev.wuffs.bcc.contract.ServerDataExtension;
+import dev.wuffs.bcc.data.ServerDataExtension;
 import dev.wuffs.bcc.data.BetterStatus;
-import dev.wuffs.bcc.client.screen.BCCMultiplayerAddon;
+import dev.wuffs.bcc.client.screen.CompatabilityRender;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.multiplayer.JoinMultiplayerScreen;
 import net.minecraft.client.gui.screens.multiplayer.ServerSelectionList;
@@ -35,6 +35,6 @@ public class OnlineServerEntryMixin {
         if (betterData == null || BetterCompatibilityChecker.getBetterStatus() == null) {
             return;
         }
-        BCCMultiplayerAddon.drawBCCChecker(this.screen, betterData, guiGraphics, x, y, entryWidth, m, n);
+        CompatabilityRender.render(this.screen, betterData, guiGraphics, x, y, entryWidth, m, n);
     }
 }

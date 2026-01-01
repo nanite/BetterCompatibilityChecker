@@ -11,10 +11,10 @@ import net.minecraft.resources.ResourceLocation;
 
 import static dev.wuffs.bcc.BetterCompatibilityChecker.comparePingData;
 
-public class BCCMultiplayerAddon {
+public class CompatabilityRender {
     private static final ResourceLocation ICON_SHEET = ResourceLocation.fromNamespaceAndPath(BetterCompatibilityChecker.MOD_ID, "textures/gui/icons.png");
 
-    public static void drawBCCChecker(JoinMultiplayerScreen gui, BetterStatus serverStatus, GuiGraphics guiGraphics, int x, int y, int width, int relativeMouseX, int relativeMouseY) {
+    public static void render(JoinMultiplayerScreen gui, BetterStatus serverStatus, GuiGraphics guiGraphics, int x, int y, int width, int mouseX, int mouseY) {
         if (serverStatus == null) {
             return;
         }
@@ -36,7 +36,7 @@ public class BCCMultiplayerAddon {
 
         guiGraphics.blit(ICON_SHEET, x + width - 18, y + 10, 16, 16, 0, idx, 16, 16, 16, 32);
 
-        if (relativeMouseX > width - 15 && relativeMouseX < width && relativeMouseY > 10 && relativeMouseY < 26) {
+        if (mouseX > width - 15 && mouseX < width && mouseY > 10 && mouseY < 26) {
             gui.setTooltipForNextRenderPass(Minecraft.getInstance().font.split(Component.literal(tooltip), 370));
         }
     }

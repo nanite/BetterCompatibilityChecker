@@ -1,6 +1,6 @@
 package dev.wuffs.bcc.mixin;
 
-import dev.wuffs.bcc.contract.ServerDataExtension;
+import dev.wuffs.bcc.data.ServerDataExtension;
 import dev.wuffs.bcc.data.BetterStatus;
 import net.minecraft.client.multiplayer.ServerData;
 import org.spongepowered.asm.mixin.Mixin;

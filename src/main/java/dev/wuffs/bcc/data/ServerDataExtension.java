@@ -1,6 +1,4 @@
-package dev.wuffs.bcc.contract;
-
-import dev.wuffs.bcc.data.BetterStatus;
+package dev.wuffs.bcc.data;
 
 public interface ServerDataExtension {
     void setBetterData(BetterStatus status);
