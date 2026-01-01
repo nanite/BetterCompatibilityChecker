@@ -37,8 +37,8 @@ public class CompatabilityRender {
 
         guiGraphics.blit(RenderPipelines.GUI_TEXTURED, ICON_SHEET, x + width - 18, y + 10,0, idx, 16, 16, 16, 32);
 
-        if (mouseX > width - 15 && mouseX < width && mouseY > 10 && mouseY < 26) {
-            guiGraphics.setTooltipForNextFrame(Minecraft.getInstance().font.split(Component.literal(tooltip), 370), mouseX + x, mouseY + y);
+        if (mouseX - x > width - 15 && mouseX - x < width && mouseY - y > 10 && mouseY - y < 26) {
+            guiGraphics.setTooltipForNextFrame(Minecraft.getInstance().font.split(Component.literal(tooltip), 370), mouseX, mouseY);
         }
     }
 }

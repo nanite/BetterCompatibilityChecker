@@ -1,33 +1,100 @@
 package dev.wuffs.bcc;
 
-import net.neoforged.neoforge.common.ModConfigSpec;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
+import com.mojang.logging.LogUtils;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.JsonOps;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
+import org.slf4j.Logger;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.List;
 
 public class Config {
-    public static final String CATEGORY_GENERAL = "general";
+    private static final Logger LOGGER = LogUtils.getLogger();
 
-    public static ModConfigSpec CONFIG;
+    private static final ConfigData DEFAULT = new ConfigData(
+            new StringEntry("CHANGE_ME", List.of("The name of the modpack")),
+            new StringEntry("CHANGE_ME", List.of("The version of the modpack")),
+            new BooleanEntry(false, List.of("Use the metadata.json to determine the modpack version", "ONLY ENABLE THIS IF YOU KNOW WHAT YOU ARE DOING"))
+    );
 
-    public static ModConfigSpec.IntValue modpackProjectID;
-    public static ModConfigSpec.ConfigValue<String> modpackName;
-    public static ModConfigSpec.ConfigValue<String> modpackVersion;
-    public static ModConfigSpec.BooleanValue useMetadata;
+    private static Config instance;
 
+    private ConfigData data;
+    private Path configPath;
 
-    static {
-        ModConfigSpec.Builder BUILDER = new ModConfigSpec.Builder();
+    public static ConfigData data() {
+        return get().data;
+    }
 
-        BUILDER.comment("General settings").push(CATEGORY_GENERAL);
-        modpackProjectID = BUILDER.comment("modpackProjectID is now deprecated and will be removed soon")
-                .defineInRange("modpackProjectID", 0, 0, Integer.MAX_VALUE);
-        modpackName = BUILDER.comment("The name of the modpack")
-                .define("modpackName", "CHANGE_ME");
-        modpackVersion = BUILDER.comment("The version of the modpack")
-                .define("modpackVersion", "CHANGE_ME");
-        useMetadata = BUILDER.comment("Use the metadata.json to determine the modpack version", "ONLY ENABLE THIS IF YOU KNOW WHAT YOU ARE DOING")
-                .define("useMetadata", false);
+    public static Config get() {
+        if (instance == null) {
+            instance = new Config();
+        }
 
-        BUILDER.pop();
+        return instance;
+    }
 
-        CONFIG = BUILDER.build();
+    public Config() {
+        this.configPath = BetterCompatibilityChecker.PLATFORM.configPath().resolve("bcc-common.json");
+        this.load();
+    }
+
+    private void load() {
+        if (!Files.exists(configPath)) {
+            this.writeDefault();
+            return;
+        }
+
+        try {
+            String jsonString = Files.readString(this.configPath);
+            JsonElement jsonData = new Gson().fromJson(jsonString, JsonElement.class);
+            this.data = ConfigData.CODEC.parse(JsonOps.INSTANCE, jsonData)
+                    .getOrThrow();
+
+        } catch (IOException e) {
+            LOGGER.error("Failed to read config", e);
+            this.data = DEFAULT;
+        }
+    }
+
+    private void writeDefault() {
+        this.data = DEFAULT;
+        try {
+            JsonElement jsonData = ConfigData.CODEC.encodeStart(JsonOps.INSTANCE, this.data)
+                    .getOrThrow();
+
+            Gson gson = new GsonBuilder().setPrettyPrinting().create();
+            Files.writeString(this.configPath, gson.toJson(jsonData));
+        } catch (IOException e) {
+            LOGGER.error("Failed to write default config", e);
+        }
+    }
+
+    public record ConfigData(StringEntry modpackName, StringEntry modpackVersion, BooleanEntry useMetadata) {
+        public static final Codec<ConfigData> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+                StringEntry.CODEC.fieldOf("modpackName").forGetter(ConfigData::modpackName),
+                StringEntry.CODEC.fieldOf("modpackVersion").forGetter(ConfigData::modpackVersion),
+                BooleanEntry.CODEC.fieldOf("useMetadata").forGetter(ConfigData::useMetadata)
+        ).apply(instance, ConfigData::new));
+    }
+
+    public record StringEntry(String value, List<String> comments) {
+        public static final Codec<StringEntry> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+                Codec.STRING.fieldOf("value").forGetter(StringEntry::value),
+                Codec.STRING.listOf().fieldOf("comments").forGetter(StringEntry::comments)
+        ).apply(instance, StringEntry::new));
+    }
+
+    public record BooleanEntry(boolean value, List<String> comments) {
+        public static final Codec<BooleanEntry> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+                Codec.BOOL.fieldOf("value").forGetter(BooleanEntry::value),
+                Codec.STRING.listOf().fieldOf("comments").forGetter(BooleanEntry::comments)
+        ).apply(instance, BooleanEntry::new));
     }
 }

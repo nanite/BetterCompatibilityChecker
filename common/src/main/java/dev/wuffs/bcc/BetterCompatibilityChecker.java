@@ -36,11 +36,13 @@ public class BetterCompatibilityChecker {
     }
 
     public void init() {
+        // Force load config
+        Config.data();
     }
 
     public void onSetup(Consumer<BetterStatus> onSuccess) {
         LOGGER.info("Better Compatibility Checker setup");
-        if (Config.useMetadata.get()) {
+        if (Config.data().useMetadata().value()) {
             Path metaFile = PLATFORM.configPath().resolve("metadata.json");
             if (!Files.exists(metaFile)) {
                 LOGGER.error("No metadata.json found, falling back to config values");
@@ -62,9 +64,10 @@ public class BetterCompatibilityChecker {
             }
         }
 
+        var confData = Config.data();
         BetterCompatibilityChecker.updateStatus(new BetterStatus(
-                Config.modpackName.get(),
-                Config.modpackVersion.get(),
+                confData.modpackName().value(),
+                confData.modpackVersion().value(),
                 false
         ));
 

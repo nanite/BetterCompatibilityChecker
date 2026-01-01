@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [21.10.0]
+
+### Changed
+
+- Updated to 1.21.9 -> 1.21.10
+- Removed `Forge Config Api` as a dependency. The config is now a json file inside the config folder.
+
 ## [21.6.0]
 
 ### Changed
