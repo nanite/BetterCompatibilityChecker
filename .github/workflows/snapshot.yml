@@ -13,6 +13,6 @@ jobs:
     secrets:
       nanite-token: ${{ secrets.NANITE_DEPLOY }}
     with:
-      java-version: 21
+      java-version: 25
       use-snapshots: true
       gradle-tasks: build publish
