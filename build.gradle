@@ -116,6 +116,7 @@ publishMods {
     version = "${mod_version}"
     type = STABLE
 
+
     def createOptions = (String platform, String taskName) -> {
         publishOptions {
             file = project.provider { project(":$platform").tasks[taskName] }.flatMap { it.archiveFile }
@@ -140,12 +141,16 @@ publishMods {
     curseforge("curseforgeNeoforge") {
         from(curseForgeOptions, createOptions("neoforge", "jar"))
         projectId = curseforge_id
+        clientRequired = true
+        serverRequired = true
     }
 
     curseforge("curseforgeFabric") {
         from(curseForgeOptions, createOptions("fabric", "remapJar"))
         projectId = curseforge_id
         requires("fabric-api")
+        clientRequired = true
+        serverRequired = true
     }
 
     modrinth("modrinthNeoforge") {
