@@ -117,9 +117,9 @@ publishMods {
     type = STABLE
 
 
-    def createOptions = (String platform, String taskName) -> {
+    def createOptions = (String platform) -> {
         publishOptions {
-            file = project.provider { project(":$platform").tasks[taskName] }.flatMap { it.archiveFile }
+            file = project.provider { project(":$platform").tasks.jar }.flatMap { it.archiveFile }
             displayName = "Better Compatability Checker - ${platform} - ${mod_version}"
             modLoaders.add(platform.toLowerCase())
         }
@@ -128,25 +128,23 @@ publishMods {
     def curseForgeOptions = curseforgeOptions {
         accessToken = providers.environmentVariable("CURSE_TOKEN")
         minecraftVersions.add("${minecraft_version}")
-        minecraftVersions.add("1.21.9")
-        javaVersions.add(JavaVersion.VERSION_21)
+        javaVersions.add(JavaVersion.VERSION_25)
     }
 
     def modrinthOptions = modrinthOptions {
         accessToken = providers.environmentVariable("MODRINTH_TOKEN")
         minecraftVersions.add("${minecraft_version}")
-        minecraftVersions.add("1.21.9")
     }
 
     curseforge("curseforgeNeoforge") {
-        from(curseForgeOptions, createOptions("neoforge", "jar"))
+        from(curseForgeOptions, createOptions("neoforge"))
         projectId = curseforge_id
         clientRequired = true
         serverRequired = true
     }
 
     curseforge("curseforgeFabric") {
-        from(curseForgeOptions, createOptions("fabric", "remapJar"))
+        from(curseForgeOptions, createOptions("fabric"))
         projectId = curseforge_id
         requires("fabric-api")
         clientRequired = true
@@ -154,12 +152,12 @@ publishMods {
     }
 
     modrinth("modrinthNeoforge") {
-        from(modrinthOptions, createOptions("neoforge", "jar"))
+        from(modrinthOptions, createOptions("neoforge"))
         projectId = "${modrinth_id}"
     }
 
     modrinth("modrinthFabric") {
-        from(modrinthOptions, createOptions("fabric", "remapJar"))
+        from(modrinthOptions, createOptions("fabric"))
         projectId = "${modrinth_id}"
         requires("fabric-api")
     }
@@ -171,7 +169,7 @@ publishMods {
         tagName = providers.environmentVariable("GITHUB_REF_NAME").orElse("dryRun")
 
         file = project.provider { project(":neoforge").tasks.jar }.flatMap { it.archiveFile }
-        additionalFiles.from project.provider { project(":fabric").tasks.remapJar }.flatMap { it.archiveFile }
+        additionalFiles.from project.provider { project(":fabric").tasks.jar }.flatMap { it.archiveFile }
     }
 }
 
