@@ -4,7 +4,7 @@ import dev.wuffs.bcc.BetterCompatibilityChecker;
 import dev.wuffs.bcc.client.screen.CompatabilityRender;
 import dev.wuffs.bcc.data.BetterStatus;
 import dev.wuffs.bcc.data.ServerDataExtension;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.multiplayer.JoinMultiplayerScreen;
 import net.minecraft.client.gui.screens.multiplayer.ServerSelectionList;
 import net.minecraft.client.multiplayer.ServerData;
@@ -25,8 +25,8 @@ public abstract class OnlineServerEntryMixin extends ServerSelectionList.Entry {
     @Final
     private JoinMultiplayerScreen screen;
 
-    @Inject(method = "renderContent", at = @At("TAIL"))
-    private void renderContent(GuiGraphics guiGraphics, int mouseX, int mouseY, boolean whoKnows, float deltaTicks, CallbackInfo ci) {
+    @Inject(method = "extractContent", at = @At("TAIL"))
+    private void renderContent(GuiGraphicsExtractor graphics, int mouseX, int mouseY, boolean hovered, float a, CallbackInfo ci) {
 //        int m = mouseX - x;
 //        int n = mouseY - y;
         ServerDataExtension data = ((ServerDataExtension) serverData);
@@ -36,6 +36,6 @@ public abstract class OnlineServerEntryMixin extends ServerSelectionList.Entry {
             return;
         }
 
-        CompatabilityRender.render(this.screen, betterData, guiGraphics, this.getContentX(), this.getContentY(), this.getContentWidth(), mouseX, mouseY);
+        CompatabilityRender.render(this.screen, betterData, graphics, this.getContentX(), this.getContentY(), this.getContentWidth(), mouseX, mouseY);
     }
 }

@@ -4,7 +4,7 @@ import dev.wuffs.bcc.BetterCompatibilityChecker;
 import dev.wuffs.bcc.data.BetterStatus;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.multiplayer.JoinMultiplayerScreen;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
@@ -15,7 +15,7 @@ import static dev.wuffs.bcc.BetterCompatibilityChecker.comparePingData;
 public class CompatabilityRender {
     private static final Identifier ICON_SHEET = Identifier.fromNamespaceAndPath(BetterCompatibilityChecker.MOD_ID, "textures/gui/icons.png");
 
-    public static void render(JoinMultiplayerScreen gui, BetterStatus serverStatus, GuiGraphics guiGraphics, int x, int y, int width, int mouseX, int mouseY) {
+    public static void render(JoinMultiplayerScreen gui, BetterStatus serverStatus, GuiGraphicsExtractor guiGraphics, int x, int y, int width, int mouseX, int mouseY) {
         if (serverStatus == null) {
             return;
         }

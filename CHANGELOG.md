@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+## [26.1.0-0]
+
+- Updated to Minecraft 26.1
+
 ## [21.11.0]
 
 ### Changed
