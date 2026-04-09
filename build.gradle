@@ -115,6 +115,7 @@ publishMods {
     changelog = createChangelog()
     version = "${mod_version}"
     type = STABLE
+    def compatibleMcVersions = additional_compatible_mc_versions.split(',')
 
 
     def createOptions = (String platform) -> {
@@ -128,12 +129,18 @@ publishMods {
     def curseForgeOptions = curseforgeOptions {
         accessToken = providers.environmentVariable("CURSE_TOKEN")
         minecraftVersions.add("${minecraft_version}")
+        compatibleMcVersions.each { mcVer ->
+            minecraftVersions.add(mcVer.trim())
+        }
         javaVersions.add(JavaVersion.VERSION_25)
     }
 
     def modrinthOptions = modrinthOptions {
         accessToken = providers.environmentVariable("MODRINTH_TOKEN")
         minecraftVersions.add("${minecraft_version}")
+        compatibleMcVersions.each { mcVer ->
+            minecraftVersions.add(mcVer.trim())
+        }
     }
 
     curseforge("curseforgeNeoforge") {
