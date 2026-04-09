@@ -42,7 +42,7 @@ allprojects {
 
 subprojects {
     base {
-        archivesName = "better-compatability-checker-$project.name"
+        archivesName = "$project.archives_base_name-$project.name"
     }
 
     repositories {
@@ -120,7 +120,7 @@ publishMods {
     def createOptions = (String platform) -> {
         publishOptions {
             file = project.provider { project(":$platform").tasks.jar }.flatMap { it.archiveFile }
-            displayName = "Better Compatability Checker - ${platform} - ${mod_version}"
+            displayName = "${mod_name} - ${platform} - ${mod_version}"
             modLoaders.add(platform.toLowerCase())
         }
     }
@@ -164,7 +164,7 @@ publishMods {
 
     github {
         accessToken = providers.environmentVariable("GITHUB_TOKEN")
-        repository = "Nanite/BetterCompatibilityChecker"
+        repository = "${github_repo}"
         commitish = providers.environmentVariable("GITHUB_SHA").orElse("dryRun")
         tagName = providers.environmentVariable("GITHUB_REF_NAME").orElse("dryRun")
 
