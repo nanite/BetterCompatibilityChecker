@@ -11,7 +11,7 @@ tasks.named('wrapper', Wrapper).configure {
     distributionType = Wrapper.DistributionType.BIN
 }
 
-def isSnapshot = providers.environmentVariable("SNAPSHOT").map {it == "true"}.getOrElse(false)
+def isSnapshot = providers.environmentVariable("SNAPSHOT").map { it == "true" }.getOrElse(false)
 
 version = mod_version + (isSnapshot ? '-SNAPSHOT' : '')
 group = 'dev.wuffs'
@@ -65,25 +65,25 @@ subprojects {
     }
 
     def replaceProperties = [
-            minecraft_version: project.minecraft_version,
+            minecraft_version          : project.minecraft_version,
             minecraft_version_range_mvn: project.minecraft_version_range_mvn,
             minecraft_version_range_sem: project.minecraft_version_range_sem,
-            neoforge_version: project.neoforge_version,
-            neoforge_version_range: project.neoforge_version_range,
-            loader_version_range: project.loader_version_range,
-            fabric_api_version: project.fabric_api_version,
-            fabric_api_version_range: project.fabric_api_version_range,
-            fabric_loader_version: project.fabric_loader_version,
+            neoforge_version           : project.neoforge_version,
+            neoforge_version_range     : project.neoforge_version_range,
+            loader_version_range       : project.loader_version_range,
+            fabric_api_version         : project.fabric_api_version,
+            fabric_api_version_range   : project.fabric_api_version_range,
+            fabric_loader_version      : project.fabric_loader_version,
             fabric_loader_version_range: project.fabric_loader_version_range,
-            version: version,
-            mod_id: project.mod_id,
-            mod_name: project.mod_name,
-            mod_license: project.mod_license,
-            mod_group_id: project.mod_group_id,
-            mod_authors: project.mod_authors,
-            mod_description: project.mod_description,
-            mod_github: project.mod_github,
-            pack_version: project.pack_version,
+            version                    : version,
+            mod_id                     : project.mod_id,
+            mod_name                   : project.mod_name,
+            mod_license                : project.mod_license,
+            mod_group_id               : project.mod_group_id,
+            mod_authors                : project.mod_authors,
+            mod_description            : project.mod_description,
+            mod_github                 : project.mod_github,
+            pack_version               : project.pack_version,
     ]
 
     processResources {
@@ -131,8 +131,10 @@ publishMods {
     def curseForgeOptions = curseforgeOptions {
         accessToken = providers.environmentVariable("CURSE_TOKEN")
         minecraftVersions.add("${minecraft_version}")
-        compatibleMcVersions.each { mcVer ->
-            minecraftVersions.add(mcVer.trim())
+        if (!compatibleMcVersions.empty) {
+            compatibleMcVersions.each { mcVer ->
+                minecraftVersions.add(mcVer.trim())
+            }
         }
         javaVersions.add(JavaVersion.VERSION_25)
     }
@@ -140,8 +142,11 @@ publishMods {
     def modrinthOptions = modrinthOptions {
         accessToken = providers.environmentVariable("MODRINTH_TOKEN")
         minecraftVersions.add("${minecraft_version}")
-        compatibleMcVersions.each { mcVer ->
-            minecraftVersions.add(mcVer.trim())
+
+        if (!compatibleMcVersions.empty) {
+            compatibleMcVersions.each { mcVer ->
+                minecraftVersions.add(mcVer.trim())
+            }
         }
     }
 
