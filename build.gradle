@@ -3,8 +3,8 @@
 plugins {
     id 'java-library'
     id 'net.fabricmc.fabric-loom' version '1.17.11' apply(false)
-    id 'net.neoforged.moddev' version '2.0.141' apply(false)
-    id "me.modmuss50.mod-publish-plugin" version "2.0.0"
+    id 'net.neoforged.moddev' version '2.0.147' apply(false)
+    id "me.modmuss50.mod-publish-plugin" version "2.2.0"
 }
 
 tasks.named('wrapper', Wrapper).configure {
@@ -137,6 +137,9 @@ publishMods {
             }
         }
         javaVersions.add(JavaVersion.VERSION_25)
+
+        client = true
+        server = true
     }
 
     def modrinthOptions = modrinthOptions {
@@ -148,21 +151,19 @@ publishMods {
                 minecraftVersions.add(mcVer.trim())
             }
         }
+
+        environment = CLIENT_AND_SERVER
     }
 
     curseforge("curseforgeNeoforge") {
         from(curseForgeOptions, createOptions("neoforge"))
         projectId = curseforge_id
-        clientRequired = true
-        serverRequired = true
     }
 
     curseforge("curseforgeFabric") {
         from(curseForgeOptions, createOptions("fabric"))
         projectId = curseforge_id
         requires("fabric-api")
-        clientRequired = true
-        serverRequired = true
     }
 
     modrinth("modrinthNeoforge") {
